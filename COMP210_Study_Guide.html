@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COMP210 Study Guide — Data Structures &amp; Algorithms</title>
+<style>
+  :root{
+    --bg:#0f1720; --panel:#16212e; --panel2:#1d2b3a; --ink:#e8eef5; --muted:#9fb0c3;
+    --line:#2b3c50; --green:#159957; --green-d:#0f7a44; --red:#c0392b; --amber:#d68910;
+    --blue:#2e86de; --accent:#3ddc84; --heap:#8e44ad; --stack:#2e86de;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.5}
+  header{background:linear-gradient(120deg,#0f7a44,#159957);padding:18px 24px;position:sticky;top:0;z-index:30;
+    box-shadow:0 2px 12px rgba(0,0,0,.4)}
+  header h1{margin:0;font-size:19px}
+  header p{margin:3px 0 0;font-size:12px;opacity:.9}
+  .lesson-bar{display:flex;flex-wrap:wrap;gap:8px;max-width:1150px;margin:12px auto 0}
+  .lesson-bar button{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);
+    padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700}
+  .lesson-bar button.active{background:#fff;color:var(--green-d)}
+  .lesson-bar button:disabled{opacity:.45;cursor:not-allowed}
+  .progress-wrap{max-width:1150px;margin:10px auto 0;background:rgba(255,255,255,.15);border-radius:8px;height:7px;overflow:hidden}
+  .progress-bar{height:100%;background:#fff;width:0;transition:width .3s}
+  .progress-txt{font-size:11px;opacity:.9;margin-top:4px;max-width:1150px;margin-left:auto;margin-right:auto}
+  nav.topics{display:flex;flex-wrap:wrap;gap:6px;max-width:1150px;margin:14px auto 0;padding:0 24px}
+  nav.topics button{background:var(--panel);color:var(--muted);border:1px solid var(--line);padding:7px 13px;
+    border-radius:20px;cursor:pointer;font-size:13px;font-weight:600}
+  nav.topics button.active{background:var(--green);color:#fff;border-color:var(--green)}
+  main{max-width:1150px;margin:0 auto;padding:22px 24px}
+  .lesson{display:none}
+  .lesson.active{display:block}
+  .topic{display:none;animation:fade .3s}
+  .topic.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+  h2{font-size:22px;border-bottom:2px solid var(--line);padding-bottom:8px;margin-top:0}
+  h3{color:var(--accent);font-size:16px;margin:26px 0 8px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:16px 0}
+  .concept{background:var(--panel2);border-left:4px solid var(--green);border-radius:8px;padding:12px 16px;margin:12px 0;font-size:14px}
+  .concept b{color:var(--accent)}
+  code,pre{font-family:"SF Mono",Menlo,Consolas,monospace}
+  pre{background:#0b1119;border:1px solid var(--line);border-radius:8px;padding:14px;overflow-x:auto;font-size:13px;
+    line-height:1.5;position:relative}
+  pre .ln{color:#54687e;user-select:none;display:inline-block;width:22px;text-align:right;margin-right:12px}
+  .kw{color:#ff7b72}.ty{color:#79c0ff}.st{color:#a5d6ff}.cm{color:#8b949e;font-style:italic}.fn{color:#d2a8ff}.nm{color:#ffa657}
+  .q{margin:14px 0}
+  .q .prompt{font-weight:600;margin-bottom:8px}
+  .q .prompt .tag{font-size:11px;background:var(--panel2);color:var(--muted);border:1px solid var(--line);
+    padding:2px 8px;border-radius:10px;margin-right:8px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+  .opt{display:block;width:100%;text-align:left;background:var(--panel2);color:var(--ink);border:1px solid var(--line);
+    border-radius:8px;padding:10px 14px;margin:6px 0;cursor:pointer;font-size:14px;transition:.15s}
+  .opt:hover{border-color:var(--green)}
+  .opt.correct{background:rgba(21,153,87,.25);border-color:var(--green)}
+  .opt.wrong{background:rgba(192,57,43,.22);border-color:var(--red)}
+  .opt.disabled{cursor:default;opacity:.85}
+  .fb{font-size:13px;margin-top:8px;padding:10px 12px;border-radius:8px;display:none}
+  .fb.show{display:block}
+  .fb.ok{background:rgba(21,153,87,.18);border:1px solid var(--green)}
+  .fb.no{background:rgba(192,57,43,.15);border:1px solid var(--red)}
+  input[type=text],textarea{width:100%;background:#0b1119;color:var(--ink);border:1px solid var(--line);
+    border-radius:8px;padding:9px 12px;font-family:"SF Mono",Menlo,monospace;font-size:13px}
+  textarea{min-height:120px;resize:vertical}
+  .btn{background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 16px;cursor:pointer;font-weight:600;font-size:13px}
+  .btn:hover{background:var(--green-d)}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--muted)}
+  .btn.ghost:hover{border-color:var(--green);color:var(--ink)}
+  .btn.small{padding:5px 10px;font-size:12px}
+  .reveal{display:none;margin-top:10px}
+  .reveal.show{display:block}
+  .fillblank{display:inline-block;width:180px;margin:0 4px}
+  .fillblank.sm{width:120px}.fillblank.lg{width:340px}
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+  .mem{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px}
+  .mem-col{background:#0b1119;border:1px solid var(--line);border-radius:10px;padding:12px;min-height:240px}
+  .mem-col h4{margin:0 0 10px;text-align:center;font-size:14px;letter-spacing:.05em}
+  .mem-col.stack h4{color:var(--stack)}.mem-col.heap h4{color:var(--heap)}
+  .frame{background:rgba(46,134,222,.12);border:1px solid var(--stack);border-radius:8px;padding:8px 10px;margin:8px 0;font-size:13px}
+  .frame .fname{font-weight:700;color:var(--stack);border-bottom:1px dashed var(--line);padding-bottom:4px;margin-bottom:6px;
+    display:flex;justify-content:space-between;align-items:center}
+  .frame .var{display:flex;justify-content:space-between;font-family:"SF Mono",monospace;padding:2px 0}
+  .frame .var .val{color:var(--accent)}
+  .frame .var .ptr{color:var(--heap)}
+  .obj{background:rgba(142,68,173,.14);border:1px solid var(--heap);border-radius:8px;padding:8px 10px;margin:8px 0;font-size:13px}
+  .obj .addr{font-family:"SF Mono",monospace;color:var(--heap);font-weight:700;font-size:12px}
+  .obj .content{font-family:"SF Mono",monospace;margin-top:4px;white-space:pre-wrap}
+  .step-desc{background:var(--panel2);border-radius:8px;padding:10px 14px;font-size:14px;margin-top:12px;min-height:44px}
+  .step-desc b{color:var(--accent)}
+  .del-x{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px}
+  .del-x:hover{color:var(--red)}
+  select{background:#0b1119;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px}
+  .muted{color:var(--muted);font-size:13px}
+  table.match{width:100%;border-collapse:collapse;margin-top:8px}
+  table.match td{padding:6px;vertical-align:top}
+  .match-term{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px;font-weight:600;font-size:14px}
+  .match-def{width:100%}
+  .score-badge{font-size:12px;color:var(--muted)}
+  .order-item{display:flex;align-items:center;justify-content:space-between;background:var(--panel2);
+    border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:6px 0;font-size:14px}
+  .order-item.correct{border-color:var(--green);background:rgba(21,153,87,.18)}
+  .order-item.wrong{border-color:var(--red);background:rgba(192,57,43,.15)}
+  .order-item .num{color:var(--muted);font-weight:700;margin-right:10px;min-width:18px}
+  .order-btns button{background:var(--panel);border:1px solid var(--line);color:var(--ink);border-radius:6px;
+    cursor:pointer;padding:2px 9px;font-size:14px;margin-left:4px}
+  .order-btns button:hover{border-color:var(--green)}
+  footer{text-align:center;color:var(--muted);font-size:12px;padding:30px}
+  kbd{background:var(--panel2);border:1px solid var(--line);border-radius:4px;padding:1px 6px;font-size:12px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:780px){.two,.mem{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <h1>COMP210 · Data Structures &amp; Algorithms — Study Guide</h1>
+  <p>Active-recall review + interactive diagramming · Exam 2 covers Lessons 4–7</p>
+  <div class="lesson-bar">
+    <button data-l="l4" class="active" onclick="showLesson('l4',this)">Lesson 4 · Stack, Heap, Recursion</button>
+    <button data-l="l5" onclick="showLesson('l5',this)">Lesson 5 · OOP</button>
+    <button data-l="l6" onclick="showLesson('l6',this)">Lesson 6 · Interfaces, ADTs &amp; Testing</button>
+    <button data-l="l7" onclick="showLesson('l7',this)">Lesson 7 · Big-O &amp; Sorting</button>
+    <button data-l="practice" onclick="showLesson('practice',this)">★ Practice</button>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+  <div class="progress-txt" id="ptxt">0 items answered</div>
+</header>
+
+<!-- ======================= LESSON 4 =========================== -->
+<div class="lesson active" id="l4">
+<nav class="topics">
+  <button class="active" onclick="showTopic(this,'l4-scope')">Scope</button>
+  <button onclick="showTopic(this,'l4-memory')">Stack &amp; Heap</button>
+  <button onclick="showTopic(this,'l4-recursion')">Recursion</button>
+  <button onclick="showTopic(this,'l4-debugger')">Debugger</button>
+  <button onclick="showTopic(this,'l4-diagram')">Diagram It</button>
+</nav>
+<main>
+
+  <section class="topic active" id="l4-scope">
+    <h2>Lesson 4 · Variable Scope</h2>
+    <div class="concept"><b>Scope</b> = <i>where a name is valid.</i> A local variable is valid within the <b>block of statements</b> in which it is declared (a loop body, a method body, an <code>if</code> block, etc.). Two rules: (1) the declaration must occur <b>before</b> the variable is used, and (2) <b>parameter names are local variables</b> whose scope is the method body.</div>
+    <div class="card">
+      <h3>Warm-up: True or False</h3>
+      <div class="q" data-tf="F">
+        <div class="prompt"><span class="tag">T / F</span>You "declare" a variable in a scope, so "scope" is the correct word for the region a local variable is valid within.</div>
+        <button class="opt" data-v="T">True</button><button class="opt" data-v="F">False</button>
+        <div class="fb">Your practice quiz caught this exact nuance. A variable is valid within the <b>block of statements</b> (the block) where it's declared — "scope" names the concept, but the region itself is the block. You don't "declare in a scope."</div>
+      </div>
+      <div class="q" data-tf="T">
+        <div class="prompt"><span class="tag">T / F</span>A method parameter is a local variable whose scope is the body of that method.</div>
+        <button class="opt" data-v="T">True</button><button class="opt" data-v="F">False</button>
+        <div class="fb">Parameters behave exactly like locals declared at the top of the method body.</div>
+      </div>
+      <div class="q" data-tf="F">
+        <div class="prompt"><span class="tag">T / F</span>A variable declared inside a <code>for</code> loop body is still usable after the loop ends.</div>
+        <button class="opt" data-v="T">True</button><button class="opt" data-v="F">False</button>
+        <div class="fb">It falls out of scope when the block ends — the compiler will reject any use afterward.</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Trace the scope</h3>
+      <pre><span class="ln">1</span><span class="kw">public static void</span> <span class="fn">main</span>(String[] args) {
+<span class="ln">2</span>    <span class="ty">int</span> n1 = <span class="nm">1</span>;
+<span class="ln">3</span>    <span class="kw">if</span> (n1 &lt; <span class="nm">5</span>) {
+<span class="ln">4</span>        <span class="ty">int</span> n2 = <span class="nm">2</span>;
+<span class="ln">5</span>        n1 = n1 + n2;
+<span class="ln">6</span>    }
+<span class="ln">7</span>    <span class="cm">// ...</span>
+<span class="ln">8</span>}</pre>
+      <div class="q" data-mc="1">
+        <div class="prompt"><span class="tag">Multiple choice</span>Immediately after line 5 runs, which variables are in scope and what are their values?</div>
+        <button class="opt" data-i="0"><code>n1 = 3</code> and <code>n2 = 2</code></button>
+        <button class="opt" data-i="1"><code>n1 = 3</code> only</button>
+        <button class="opt" data-i="2"><code>n1 = 1</code> and <code>n2 = 2</code></button>
+        <div class="fb">On line 5 both are alive: <code>n1</code> becomes <code>1+2 = 3</code>, and <code>n2 = 2</code> is still in scope inside the <code>if</code> block. <b>After line 6</b>, <code>n2</code> is gone and only <code>n1 = 3</code> remains.</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Fix the code</h3>
+      <p class="muted">This does not compile because of a scope error. What's wrong, and how would you fix it?</p>
+      <pre><span class="ln">1</span><span class="kw">int</span> total = <span class="nm">0</span>;
+<span class="ln">2</span><span class="kw">for</span> (<span class="ty">int</span> i = <span class="nm">0</span>; i &lt; <span class="nm">10</span>; i++) {
+<span class="ln">3</span>    <span class="ty">int</span> sq = i * i;
+<span class="ln">4</span>    total += sq;
+<span class="ln">5</span>}
+<span class="ln">6</span>System.out.println(sq);   <span class="cm">// &lt;-- ?</span></pre>
+      <button class="btn ghost small" onclick="toggleReveal(this)">Show solution</button>
+      <div class="reveal"><div class="concept"><code>sq</code> is declared inside the loop body (line 3), so its scope ends at line 5. Line 6 is outside that block → <code>sq</code> is undefined there → compile error. <b>Fix:</b> declare <code>sq</code> before the loop if you need it afterward, or print it inside the loop. Note <code>i</code> has the same problem — its scope is the loop header + body only.</div></div>
+    </div>
+  </section>
+
+  <section class="topic" id="l4-memory">
+    <h2>Lesson 4 · Stack &amp; Heap Memory</h2>
+    <div class="concept">The JVM splits memory into two regions. <b>Call Stack</b> — holds local-variable (and parameter) values for the currently executing methods, arranged like a LIFO stack. <b>Heap</b> — large general memory where the <b>objects themselves</b> live, organized by address. A primitive's value on the stack is its <b>simple value</b>; an object variable's value on the stack is the object's <b>address on the heap</b> (e.g. <code>@835</code>).</div>
+    <div class="card">
+      <h3>Concept check</h3>
+      <table class="match" id="match-mem">
+        <tr><td class="match-term">Heap</td><td><select class="match-def"><option value="">— choose —</option><option value="obj">Objects (arrays, Strings, instances)</option><option value="loc">Local variable &amp; parameter values</option></select></td></tr>
+        <tr><td class="match-term">Stack</td><td><select class="match-def"><option value="">— choose —</option><option value="obj">Objects (arrays, Strings, instances)</option><option value="loc">Local variable &amp; parameter values</option></select></td></tr>
+      </table>
+      <button class="btn small" style="margin-top:8px" onclick="checkMatch('match-mem','fb-match-mem',['obj','loc'])">Check</button>
+      <div class="fb" id="fb-match-mem"></div>
+      <div class="q" data-tf="T" style="margin-top:18px">
+        <div class="prompt"><span class="tag">T / F</span>When you store an array in a local variable, the stack frame holds the array's <b>address</b>, not the array's elements.</div>
+        <button class="opt" data-v="T">True</button><button class="opt" data-v="F">False</button>
+        <div class="fb">Primitives store their value directly; object/array references store a heap address. The elements live on the heap.</div>
+      </div>
+      <div class="q" data-mc="0">
+        <div class="prompt"><span class="tag">Multiple choice</span>What does the Garbage Collector do?</div>
+        <button class="opt" data-i="0">Removes heap objects that no longer have any variable pointing to them</button>
+        <button class="opt" data-i="1">Pops the top frame off the call stack when a method returns</button>
+        <button class="opt" data-i="2">Compiles <code>.java</code> files into bytecode</button>
+        <div class="fb">If an object on the heap loses all references, the GC reclaims that memory. Popping frames is the stack's normal behavior, not GC.</div>
+      </div>
+      <div class="q" data-mc="0">
+        <div class="prompt"><span class="tag">Multiple choice</span>Why does the JVM partition memory into stack and heap?</div>
+        <button class="opt" data-i="0">To use only the space that's needed (space complexity) and speed things up (time complexity)</button>
+        <button class="opt" data-i="1">Because Java requires exactly two threads</button>
+        <button class="opt" data-i="2">So primitives and objects can never be used together</button>
+        <div class="fb">Straight from the slides: partitioning targets both space and time efficiency.</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Vocabulary: Call Frame</h3>
+      <div class="concept"><b>Call frame</b> — the memory where local variables for a currently executing method live. When a method is <b>called</b>, a new frame is <b>pushed</b>; locals are added as declared and removed as they fall out of scope. When a method <b>returns</b>, its frame is <b>popped</b> and execution resumes in the caller.</div>
+      <div class="q" data-tf="F">
+        <div class="prompt"><span class="tag">T / F</span>The call stack behaves like a queue: first frame pushed is the first removed (FIFO).</div>
+        <button class="opt" data-v="T">True</button><button class="opt" data-v="F">False</button>
+        <div class="fb">The stack is <b>LIFO</b> — last in, first out. The most recently called method returns first. (Push/pop, not enqueue/dequeue.)</div>
+      </div>
+    </div>
+    <p class="muted">➡ Practice drawing memory in the <b>Diagram It</b> tab.</p>
+  </section>
+
+  <section class="topic" id="l4-recursion">
+    <h2>Lesson 4 · Recursion</h2>
+    <div class="concept"><b>Recursive function</b> — a function that calls itself within its own body to break a task into smaller subproblems. Its body has <b>base case(s)</b> and <b>recursive case(s)</b>.<br>
+    <b>Recursive call</b> — when a method calls itself. &nbsp; <b>Base case</b> — a branch that does <b>not</b> make a recursive call (stops it). &nbsp; <b>Recursive case</b> — a branch that <b>does</b> make a recursive call (moves toward the base case).</div>
+    <div class="card">
+      <h3>Match the term to its definition</h3>
+      <table class="match" id="match-rec">
+        <tr><td class="match-term">Recursive Call</td><td><select class="match-def"><option value="">— choose —</option><option value="a">When a method calls itself</option><option value="b">A function that calls itself to break a task into smaller subproblems</option><option value="c">A branch that does NOT make a recursive call</option><option value="d">A branch that DOES make a recursive call</option></select></td></tr>
+        <tr><td class="match-term">Recursive Function</td><td><select class="match-def"><option value="">— choose —</option><option value="a">When a method calls itself</option><option value="b">A function that calls itself to break a task into smaller subproblems</option><option value="c">A branch that does NOT make a recursive call</option><option value="d">A branch that DOES make a recursive call</option></select></td></tr>
+        <tr><td class="match-term">Base Case</td><td><select class="match-def"><option value="">— choose —</option><option value="a">When a method calls itself</option><option value="b">A function that calls itself to break a task into smaller subproblems</option><option value="c">A branch that does NOT make a recursive call</option><option value="d">A branch that DOES make a recursive call</option></select></td></tr>
+        <tr><td class="match-term">Recursive Case</td><td><select class="match-def"><option value="">— choose —</option><option value="a">When a method calls itself</option><option value="b">A function that calls itself to break a task into smaller subproblems</option><option value="c">A branch that does NOT make a recursive call</option><option value="d">A branch that DOES make a recursive call</option></select></td></tr>
+      </table>
+      <button class="btn small" style="margin-top:8px" onclick="checkMatch('match-rec','fb-match-rec',['a','b','c','d'])">Check</button>
+      <div class="fb" id="fb-match-rec"></div>
+    </div>
+    <div class="card">
+      <h3>Write the code</h3>
+      <p>Write a recursive static method <code>factorial</code> that takes a non-negative <code>int n</code> and returns <code>n!</code> (product of 1..n, with <code>0! = 1</code>). Assume valid input.</p>
+      <textarea placeholder="public static int factorial(int n) {&#10;    // your code&#10;}"></textarea>
+      <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show solution</button><span class="muted">Type it first, then compare.</span></div>
+      <div class="reveal">
+<pre><span class="kw">public static</span> <span class="ty">int</span> <span class="fn">factorial</span>(<span class="ty">int</span> n) {
+    <span class="cm">// Base case</span>
+    <span class="kw">if</span> (n == <span class="nm">0</span>) <span class="kw">return</span> <span class="nm">1</span>;
+    <span class="cm">// Recursive case</span>
+    <span class="kw">return</span> n * <span class="fn">factorial</span>(n - <span class="nm">1</span>);
+}</pre>
+        <div class="concept">Exactly <code>Factorial.java</code> from your L4 examples. Base case <code>n == 0 → 1</code> stops the recursion; each recursive call reduces <code>n</code> by 1.</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Fix the code</h3>
+      <p class="muted">This factorial has a bug. What happens when you run it, and why?</p>
+      <pre><span class="ln">1</span><span class="kw">public static</span> <span class="ty">int</span> <span class="fn">factorial</span>(<span class="ty">int</span> n) {
+<span class="ln">2</span>    <span class="kw">return</span> n * <span class="fn">factorial</span>(n - <span class="nm">1</span>);
+<span class="ln">3</span>}</pre>
+      <div class="q" data-mc="1">
+        <div class="prompt"><span class="tag">Multiple choice</span>Pick the correct diagnosis + fix.</div>
+        <button class="opt" data-i="0">Returns 0 for every input; fix by starting the product at 1.</button>
+        <button class="opt" data-i="1">No base case, so it recurses forever → <code>StackOverflowError</code>. Fix: add <code>if (n == 0) return 1;</code> at the top.</button>
+        <button class="opt" data-i="2">It works fine; nothing to fix.</button>
+        <div class="fb">Every recursive method needs a base case. Without one, each call pushes a new frame and none returns → the call stack overflows.</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Divide &amp; Conquer — trace <code>recur(4)</code></h3>
+      <p class="muted">The exact snippet from your practice quiz. A <b>divide-and-conquer</b> algorithm breaks a problem into subproblems, solves each, and combines the results.</p>
+<pre><span class="kw">public static</span> <span class="ty">long</span> <span class="fn">recur</span>(<span class="ty">int</span> n) {
+    <span class="kw">if</span> (n &lt;= <span class="nm">1</span>) <span class="kw">return</span> <span class="nm">2</span>;
+    <span class="kw">return</span> <span class="fn">recur</span>(n - <span class="nm">1</span>) * <span class="fn">recur</span>(n - <span class="nm">1</span>);
+}</pre>
+      <div class="q">
+        <div class="prompt"><span class="tag">Fill in</span>Total new stack frames pushed when calling <code>recur(4)</code>:
+          <input type="text" class="fillblank sm" data-answer="15" placeholder="?"><button class="btn small" onclick="checkFill(this)">Check</button></div>
+        <div class="fb">Count every call: <code>recur(4)</code>=1, <code>recur(3)</code>=2, <code>recur(2)</code>=4, <code>recur(1)</code>=8 → <b>1+2+4+8 = 15</b>.</div>
+      </div>
+      <div class="q">
+        <div class="prompt"><span class="tag">Fill in</span>Its return value:
+          <input type="text" class="fillblank sm" data-answer="256" placeholder="?"><button class="btn small" onclick="checkFill(this)">Check</button></div>
+        <div class="fb"><code>recur(1)=2</code> → <code>recur(2)=4</code> → <code>recur(3)=16</code> → <code>recur(4)=16*16 =</code> <b>256</b>.</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Iteration vs. Recursion — True or False</h3>
+      <div class="q" data-tf="T">
+        <div class="prompt"><span class="tag">T / F</span>Recursive solutions generally use more memory than iterative ones because each call creates a new stack frame.</div>
+        <button class="opt" data-v="T">True</button><button class="opt" data-v="F">False</button>
+        <div class="fb">True — every recursive call adds a frame. The trade-off: recursion is often more elegant/readable and fits recursively-structured data.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="topic" id="l4-debugger">
+    <h2>Lesson 4 · The Debugger</h2>
+    <div class="concept">A debugger lets you <b>find/fix bugs, inspect internal state, trace execution, and change behavior</b> — with small overhead. Core controls: <b>Breakpoints</b>, Run/Debug, Resume, Pause, Stop, Rerun, and the three "Step" commands below.</div>
+    <div class="card">
+      <h3>Match each step command to what it does</h3>
+      <table class="match" id="match-dbg">
+        <tr><td class="match-term">Step Over</td><td><select class="match-def"><option value="">— choose —</option><option value="over">Move to the next line in the same file (run any called method without stopping inside it)</option><option value="out">Finish the current function and return to the parent function</option><option value="into">Move to the next line that executes, potentially inside a called function</option></select></td></tr>
+        <tr><td class="match-term">Step Out</td><td><select class="match-def"><option value="">— choose —</option><option value="over">Move to the next line in the same file (run any called method without stopping inside it)</option><option value="out">Finish the current function and return to the parent function</option><option value="into">Move to the next line that executes, potentially inside a called function</option></select></td></tr>
+        <tr><td class="match-term">Step Into</td><td><select class="match-def"><option value="">— choose —</option><option value="over">Move to the next line in the same file (run any called method without stopping inside it)</option><option value="out">Finish the current function and return to the parent function</option><option value="into">Move to the next line that executes, potentially inside a called function</option></select></td></tr>
+      </table>
+      <button class="btn small" style="margin-top:8px" onclick="checkMatch('match-dbg','fb-match-dbg',['over','out','into'])">Check</button>
+      <div class="fb" id="fb-match-dbg"></div>
+    </div>
+    <div class="card">
+      <h3>Scenario</h3>
+      <pre><span class="ln">1</span><span class="kw">public static void</span> <span class="fn">main</span>(String[] args) {
+<span class="ln">2</span>    <span class="ty">int</span> course = <span class="nm">210</span>;
+<span class="ln">3</span>    <span class="kw">if</span> (<span class="fn">check</span>(course)) {
+<span class="ln">4</span>        <span class="fn">process</span>(course);
+<span class="ln">5</span>    }
+<span class="ln">6</span>}</pre>
+      <p class="muted">(From <code>CourseChecker.java</code>.) You're paused on line 3, about to evaluate <code>check(course)</code>.</p>
+      <div class="q" data-mc="0">
+        <div class="prompt"><span class="tag">Multiple choice</span>You want to watch what happens <b>inside</b> <code>check</code>. Which command?</div>
+        <button class="opt" data-i="0">Step Into</button><button class="opt" data-i="1">Step Over</button><button class="opt" data-i="2">Step Out</button>
+        <div class="fb">Step Into enters the called method. Step Over would run <code>check</code> to completion and stop on the next line of <code>main</code>.</div>
+      </div>
+      <div class="q" data-mc="1">
+        <div class="prompt"><span class="tag">Multiple choice</span>You've stepped into <code>check</code> but it's fine. Fastest way back to <code>main</code>?</div>
+        <button class="opt" data-i="0">Step Into</button><button class="opt" data-i="1">Step Out</button><button class="opt" data-i="2">Rerun</button>
+        <div class="fb">Step Out finishes the current method and drops you back in the caller (<code>main</code>).</div>
+      </div>
+      <div class="q" data-tf="T">
+        <div class="prompt"><span class="tag">T / F</span>A <b>breakpoint</b> tells the debugger to pause execution when it reaches that line so you can inspect state.</div>
+        <button class="opt" data-v="T">True</button><button class="opt" data-v="F">False</button>
+        <div class="fb">Right — set a breakpoint, run in debug mode, execution pauses there. Many IDEs let you <kbd>Alt</kbd>+click to evaluate any expression.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="topic" id="l4-diagram">
+    <h2>Lesson 4 · Diagram It — Stack &amp; Heap</h2>
+    <div class="concept">Diagramming stack &amp; heap is a core exam skill. Use <b>Guided Step-Through</b> to learn the pattern, then <b>Build Your Own</b> to draw a trace yourself and reveal the answer.</div>
+    <div class="toolbar">
+      <button class="btn" id="mode-guided" onclick="setDiagMode('guided')">▶ Guided Step-Through</button>
+      <button class="btn ghost" id="mode-build" onclick="setDiagMode('build')">✎ Build Your Own</button>
+    </div>
+    <div id="guided-panel">
+      <div class="card">
+        <div class="toolbar"><label class="muted">Program:</label><select id="prog-select" onchange="loadProgram()"></select></div>
+        <div class="two">
+          <pre id="prog-code" style="margin:0"></pre>
+          <div class="mem">
+            <div class="mem-col stack"><h4>▮ CALL STACK</h4><div id="g-stack"></div></div>
+            <div class="mem-col heap"><h4>▮ HEAP</h4><div id="g-heap"></div></div>
+          </div>
+        </div>
+        <div class="step-desc" id="g-desc"></div>
+        <div class="toolbar" style="justify-content:space-between">
+          <div><button class="btn ghost small" onclick="stepGuided(-1)">◀ Back</button>
+          <button class="btn small" onclick="stepGuided(1)">Next ▶</button>
+          <button class="btn ghost small" onclick="resetGuided()">⟲ Restart</button></div>
+          <span class="score-badge" id="g-counter"></span>
+        </div>
+      </div>
+    </div>
+    <div id="build-panel" style="display:none">
+      <div class="card">
+        <div class="toolbar"><label class="muted">Exercise:</label><select id="build-select"></select>
+          <button class="btn ghost small" onclick="toggleBuildAnswer()">Reveal correct diagram</button>
+          <button class="btn ghost small" onclick="clearBuild()">Clear my diagram</button></div>
+        <pre id="build-code" style="margin-top:0"></pre>
+        <p class="muted">Build the state at the moment described. Add frames (with locals) to the stack, and objects to the heap. Then reveal to compare.</p>
+        <div class="mem">
+          <div class="mem-col stack"><h4>▮ YOUR CALL STACK</h4><div id="b-stack"></div>
+            <div class="toolbar"><input type="text" id="b-frame-name" placeholder="frame name e.g. main" style="flex:1"><button class="btn small" onclick="addFrame()">+ Frame</button></div></div>
+          <div class="mem-col heap"><h4>▮ YOUR HEAP</h4><div id="b-heap"></div>
+            <div class="toolbar"><input type="text" id="b-obj-addr" placeholder="@addr" style="width:80px"><input type="text" id="b-obj-body" placeholder='contents' style="flex:1"><button class="btn small" onclick="addObj()">+ Object</button></div></div>
+        </div>
+        <div id="build-answer" class="reveal">
+          <h3>Reference diagram</h3>
+          <div class="mem"><div class="mem-col stack"><h4>▮ CALL STACK</h4><div id="ba-stack"></div></div>
+          <div class="mem-col heap"><h4>▮ HEAP</h4><div id="ba-heap"></div></div></div>
+          <div class="step-desc" id="ba-note"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+</div>
+
+<!-- ======================= LESSON 5 =========================== -->
+<div class="lesson" id="l5">
+<nav class="topics">
+  <button class="active" onclick="showTopic(this,'l5-why')">Why OOP</button>
+  <button onclick="showTopic(this,'l5-anatomy')">Anatomy of a Class</button>
+  <button onclick="showTopic(this,'l5-members')">Instance vs Class</button>
+  <button onclick="showTopic(this,'l5-objects')">Objects &amp; is-a</button>
+  <button onclick="showTopic(this,'l5-accessors')">Getters &amp; Setters</button>
+  <button onclick="showTopic(this,'l5-diagram')">Diagram It</button>
+</nav>
+<main>
+
+  <section class="topic active" id="l5-why">
+    <h2>Lesson 5 · Why OOP?</h2>
+    <div class="concept"><b>OOP flips responsibility.</b> In the non-OO <code>TriangleStats</code>, six loose doubles represent a triangle and the caller must pass them around and keep them valid. OOP formalizes that collective meaning as an <b>object</b>. <b>Encapsulation</b>: the object exposes ways to query properties and invoke behavior while <b>hiding the details</b>. The onus moves to the <i>class developer</i> to implement/validate; the <i>application developer</i> just uses the public methods.</div>
+    <div class="card">
+      <h3>Fill in the blanks — the factory metaphor</h3>
+      <p><input type="text" class="fillblank" data-answer="classes" placeholder="?"> are like factories, and
+      <input type="text" class="fillblank" data-answer="objects" placeholder="?"> are what the factory builds.</p>
+      <button class="btn small" onclick="checkFillGroup(this)">Check both</button>
+      <div class="fb">Straight from your quiz &amp; slide 26. A <b>class</b> is the blueprint/factory; each <b>object</b> (instance) is a product built from it, defined by the values of its fields (its <b>state</b>).</div>
+    </div>
+    <div class="card">
+      <h3>Non-OO vs OO</h3>
+      <div class="two">
+        <div><p class="muted">Non-OO (<code>nonOop/TriangleStats.java</code>)</p>
+<pre><span class="kw">public static</span> String <span class="fn">triangleCategory</span>(
+   <span class="ty">double</span> pointAX, <span class="ty">double</span> pointAY,
+   <span class="ty">double</span> pointBX, <span class="ty">double</span> pointBY,
+   <span class="ty">double</span> pointCX, <span class="ty">double</span> pointCY){...}</pre></div>
+        <div><p class="muted">OO (<code>oop/Triangle.java</code>)</p>
+<pre>Triangle t = <span class="kw">new</span> <span class="fn">Triangle</span>(0,0, 2,3, 4,0);
+t.<span class="fn">category</span>();
+t.<span class="fn">perimeter</span>();</pre></div>
+      </div>
+      <div class="q" data-mc="2">
+        <div class="prompt"><span class="tag">Multiple choice</span>What is the main advantage of the OO version?</div>
+        <button class="opt" data-i="0">It runs in fewer CPU cycles guaranteed.</button>
+        <button class="opt" data-i="1">It removes the need for a constructor.</button>
+        <button class="opt" data-i="2">The triangle's data + validation are bundled into one abstraction, so callers can't misuse loose coordinates.</button>
+        <div class="fb">OOP groups the related data and the code that guards it. The caller works with a valid <code>Triangle</code> object instead of juggling six independent doubles.</div>
+      </div>
+      <div class="q" data-tf="T">
+        <div class="prompt"><span class="tag">T / F</span>An <b>epsilon bound</b> (e.g. <code>&lt; 0.001</code>) is used to compare side lengths because computers can't always represent base-10 floating-point values exactly.</div>
+        <button class="opt" data-v="T">True</button><button class="opt" data-v="F">False</button>
+        <div class="fb">True — e.g. <code>0.1 + 0.2</code> is <code>0.30000000000000004</code>. If two values are within a small epsilon, treat them as equal.</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Vocabulary</h3>
+      <div class="q" data-mc="1">
+        <div class="prompt"><span class="tag">Multiple choice</span>A <b>helper class</b> is…</div>
+        <button class="opt" data-i="0">Any class marked <code>private</code>.</button>
+        <button class="opt" data-i="1">A class with no <code>main</code> method — it can't be run directly and is used by other programs (e.g. <code>Triangle</code>, <code>Point</code>).</button>
+        <button class="opt" data-i="2">A class that only contains static fields.</button>
+        <div class="fb">Slide 25: a helper class has no <code>main</code>, so it can't be executed on its own; it's a reusable building block.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="topic" id="l5-anatomy">
+    <h2>Lesson 5 · Anatomy of a Class</h2>
+    <div class="concept">Build a class in four steps: <b>(1)</b> declare the class, <b>(2)</b> declare its <b>fields</b> (private, named with a leading <code>_</code>, floating outside any method, kept at the top), <b>(3)</b> define a <b>constructor</b>, <b>(4)</b> define <b>methods</b> (public for the API, private for helpers).</div>
+    <div class="card">
+      <h3>Ordering — components top-to-bottom in a class file</h3>
+      <p class="muted">This is the quiz's ordering question. Use ▲ / ▼ to arrange, then check.</p>
+      <div id="order-class"></div>
+      <button class="btn small" style="margin-top:8px" onclick="checkOrder()">Check order</button>
+      <div class="fb" id="fb-order-class"></div>
+    </div>
+    <div class="card">
+      <h3>Constructor rules</h3>
+      <pre><span class="kw">public</span> <span class="fn">Triangle</span>(<span class="ty">double</span> ax, <span class="ty">double</span> ay, ...) {
+    <span class="fn">validatePoints</span>(ax, ay, bx, by, cx, cy);
+    _ax = ax;  <span class="cm">// same as this._ax = ax;</span>
+    _ay = ay;
+    <span class="cm">// ...</span>
+}</pre>
+      <div class="q" data-mc="1">
+        <div class="prompt"><span class="tag">Multiple choice</span>Which statement about constructors is correct?</div>
+        <button class="opt" data-i="0">Its name can be anything, but it must declare a return type.</button>
+        <button class="opt" data-i="1">Its name must match the class name and it has no return type (not even <code>void</code>).</button>
+        <button class="opt" data-i="2">It must be declared <code>static</code>.</button>
+        <div class="fb">Slide 12: the constructor's name matches the class, has no return value, and takes whatever it needs to set the fields as parameters.</div>
+      </div>
+      <div class="q" data-tf="T">
+        <div class="prompt"><span class="tag">T / F</span>Inside a constructor or instance method, <code>this</code> refers to the current instance, and can be implied when there's no name conflict.</div>
+        <button class="opt" data-v="T">True</button><button class="opt" data-v="F">False</button>
+        <div class="fb"><code>_ax = ax;</code> is shorthand for <code>this._ax = ax;</code>. You need explicit <code>this</code> only to resolve a naming conflict.</div>
+      </div>
+      <div class="q">
+        <div class="prompt"><span class="tag">Fill in</span>To create a new instance you use the
+          <input type="text" class="fillblank sm" data-answer="new" placeholder="?"> keyword to call the constructor.
+          <button class="btn small" onclick="checkFill(this)">Check</button></div>
+        <div class="fb"><code>Triangle t = <b>new</b> Triangle(0.0, 2.0, 3.0, 4.0, 0.0, 3.0);</code> — the result is a reference to the new object.</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Write a class</h3>
+      <p>Write the <code>Point</code> class from <code>oop/Point.java</code>: two private double fields <code>_x</code>, <code>_y</code>, a constructor taking <code>x, y</code>, and a <code>distanceTo(Point other)</code> method.</p>
+      <textarea placeholder="public class Point {&#10;    // fields, constructor, method&#10;}"></textarea>
+      <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show solution</button></div>
+      <div class="reveal">
+<pre><span class="kw">public class</span> <span class="ty">Point</span> {
+    <span class="kw">private</span> <span class="ty">double</span> _x;
+    <span class="kw">private</span> <span class="ty">double</span> _y;
+
+    <span class="kw">public</span> <span class="fn">Point</span>(<span class="ty">double</span> x, <span class="ty">double</span> y) {
+        _x = x;
+        _y = y;
+    }
+
+    <span class="kw">public</span> <span class="ty">double</span> <span class="fn">distanceTo</span>(Point other) {
+        <span class="kw">return</span> Math.sqrt(Math.pow(other._x - _x, 2)
+                       + Math.pow(other._y - _y, 2));
+    }
+}</pre>
+        <div class="concept">Note an object <b>can</b> access another object's private fields <i>when they're the same class</i> (<code>other._x</code>) — privacy is class-level, not object-level.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="topic" id="l5-members">
+    <h2>Lesson 5 · Instance vs. Class Members</h2>
+    <div class="concept"><b>Instance</b> fields/methods belong to <b>each object</b> — every instance has its own memory, and instance methods run on a specific instance (they can use <code>this</code>). <b>Class</b> (static) fields/methods belong to <b>the class itself</b> — shared by all instances, accessible without creating an object, and static methods have <b>no <code>this</code></b>.</div>
+    <div class="card">
+      <h3>Sort each into instance vs. class</h3>
+      <table class="match" id="match-static">
+        <tr><td class="match-term"><code>private double _ax;</code></td><td><select class="match-def"><option value="">— choose —</option><option value="inst">Instance member</option><option value="cls">Class (static) member</option></select></td></tr>
+        <tr><td class="match-term"><code>private static final double SIDE_EPSILON = 0.001;</code></td><td><select class="match-def"><option value="">— choose —</option><option value="inst">Instance member</option><option value="cls">Class (static) member</option></select></td></tr>
+        <tr><td class="match-term"><code>public String category() { ... }</code></td><td><select class="match-def"><option value="">— choose —</option><option value="inst">Instance member</option><option value="cls">Class (static) member</option></select></td></tr>
+        <tr><td class="match-term"><code>private static boolean closeEnough(...) { ... }</code></td><td><select class="match-def"><option value="">— choose —</option><option value="inst">Instance member</option><option value="cls">Class (static) member</option></select></td></tr>
+      </table>
+      <button class="btn small" style="margin-top:8px" onclick="checkMatch('match-static','fb-match-static',['inst','cls','inst','cls'])">Check</button>
+      <div class="fb" id="fb-match-static"></div>
+    </div>
+    <div class="card">
+      <div class="q" data-tf="F">
+        <div class="prompt"><span class="tag">T / F</span>A <code>static</code> (class) method can use the keyword <code>this</code>.</div>
+        <button class="opt" data-v="T">True</button><button class="opt" data-v="F">False</button>
+        <div class="fb">False — static methods aren't called on any particular instance, so there is no <code>this</code> (slide 19).</div>
+      </div>
+      <div class="q" data-tf="T">
+        <div class="prompt"><span class="tag">T / F</span>Class fields and methods are accessible <b>without</b> instantiating the class, while instance members are only accessible after you create an object.</div>
+        <button class="opt" data-v="T">True</button><button class="opt" data-v="F">False</button>
+        <div class="fb">Slide 22 — static members belong to the class; instance members require an instance.</div>
+      </div>
+      <div class="q" data-mc="2">
+        <div class="prompt"><span class="tag">Multiple choice</span>From <b>outside</b> the class, how do you call a class (static) method <code>numSides</code> on <code>Triangle</code>?</div>
+        <button class="opt" data-i="0"><code>numSides()</code></button>
+        <button class="opt" data-i="1"><code>t.numSides()</code></button>
+        <button class="opt" data-i="2"><code>Triangle.numSides()</code></button>
+        <div class="fb">Slide 20 — outside the class, static methods are called on the <b>class name</b>: <code>Triangle.numSides()</code>. The capital-T tells you it's a class, not an object. Inside the class you can just write <code>numSides()</code>.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="topic" id="l5-objects">
+    <h2>Lesson 5 · Objects, <code>is-a</code>, Object &amp; null</h2>
+    <div class="concept"><b>Object</b> is the universal reference type — every class is automatically a subclass of <code>Object</code>. An object has an <b>is-a</b> relationship with three things, so a reference can be typed as any of them. <b>null</b> is the universal reference value — any class variable can hold <code>null</code>.</div>
+    <div class="card">
+      <h3>Fill in — the three is-a relationships</h3>
+      <p class="muted">This is the quiz question you flagged. All three blanks:</p>
+      <p>An object has an is-a relationship with its own
+        <input type="text" class="fillblank sm" data-answer="class" placeholder="?">, any
+        <input type="text" class="fillblank sm" data-answer="interfaces" placeholder="?"> (plural) that its class implements, and any of its class'
+        <input type="text" class="fillblank" data-answer="superclasses" placeholder="?">.</p>
+      <button class="btn small" onclick="checkFillGroup(this)">Check all three</button>
+      <div class="fb">Correct answers: <b>class</b>, <b>interfaces</b>, <b>superclasses</b> (slide 27). The grader's notes on your quiz were right — "interface" needed to be plural, and the third blank is "superclasses," not "object." Accepted spellings here also include "superclass".</div>
+    </div>
+    <div class="card">
+      <h3>Typing by is-a</h3>
+<pre>CartesianPoint p = <span class="kw">new</span> <span class="fn">CartesianPoint</span>(2.0, 5.0); <span class="cm">// own class</span>
+Point       p = <span class="kw">new</span> <span class="fn">CartesianPoint</span>(2.0, 5.0); <span class="cm">// interface</span>
+Object      p = <span class="kw">new</span> <span class="fn">CartesianPoint</span>(2.0, 5.0); <span class="cm">// superclass (Object)</span></pre>
+      <div class="q" data-tf="T">
+        <div class="prompt"><span class="tag">T / F</span>A name typed as <code>Object</code> can refer to an object of any type.</div>
+        <button class="opt" data-v="T">True</button><button class="opt" data-v="F">False</button>
+        <div class="fb">True — since every class is a subclass of <code>Object</code>, an <code>Object</code> reference can point to any instance.</div>
+      </div>
+      <div class="q" data-mc="0">
+        <div class="prompt"><span class="tag">Multiple choice</span>Which is a valid value for <code>CartesianPoint p</code>?</div>
+        <button class="opt" data-i="0"><code>CartesianPoint p = null;</code></button>
+        <button class="opt" data-i="1"><code>CartesianPoint p = void;</code></button>
+        <button class="opt" data-i="2"><code>CartesianPoint p = 0;</code></button>
+        <div class="fb"><code>null</code> is the universal reference value — any reference-type variable can hold it (slide 28).</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Class header — fix / write it</h3>
+      <p>You have a class <code>Tomato</code> that implements interfaces <code>Vegetable</code> and <code>Fruit</code>. Write the class header (no curly brace needed):</p>
+      <input type="text" class="fillblank lg" data-answer="public class Tomato implements Vegetable, Fruit" placeholder="public class ...">
+      <button class="btn small" onclick="checkFill(this)">Check</button>
+      <div class="fb">Answer: <code>public class Tomato implements Vegetable, Fruit</code> — multiple interfaces are comma-separated after <code>implements</code>. (Matches your quiz answer.)</div>
+    </div>
+  </section>
+
+  <section class="topic" id="l5-accessors">
+    <h2>Lesson 5 · Getters &amp; Setters (JavaBeans)</h2>
+    <div class="concept">Because fields are <b>private</b>, a class exposes controlled access through <b>getter</b> (accessor) and <b>setter</b> (mutator) instance methods. Setters are also where you re-run validation before changing state.</div>
+    <div class="card">
+      <h3>Fill in — JavaBeans signatures</h3>
+      <p>The JavaBeans getter signature is
+        <input type="text" class="fillblank" data-answer="public T getP()" placeholder="?">
+        while the setter signature is
+        <input type="text" class="fillblank lg" data-answer="public void setP(T value)" placeholder="?">.</p>
+      <button class="btn small" onclick="checkFillGroup(this)">Check both</button>
+      <div class="fb">Answers: <code>public T getP()</code> and <code>public void setP(T value)</code> (slide 16). A getter returns the field's type (<code>T</code>) and takes no args; a setter returns <code>void</code> and takes the new value.</div>
+    </div>
+    <div class="card">
+      <h3>Real example from <code>Triangle</code></h3>
+<pre><span class="kw">public</span> <span class="ty">double</span>[] <span class="fn">getPoints</span>() {
+    <span class="ty">double</span>[] points = {_ax, _ay, _bx, _by, _cx, _cy};
+    <span class="kw">return</span> points;
+}
+
+<span class="kw">public void</span> <span class="fn">setA</span>(<span class="ty">double</span> ax, <span class="ty">double</span> ay) {
+    <span class="fn">validatePoints</span>(ax, ay, _bx, _by, _cx, _cy);
+    _ax = ax;
+    _ay = ay;
+}</pre>
+      <div class="q" data-mc="1">
+        <div class="prompt"><span class="tag">Multiple choice</span>Why does <code>setA</code> call <code>validatePoints</code> before assigning?</div>
+        <button class="opt" data-i="0">To make the method run faster.</button>
+        <button class="opt" data-i="1">So the object stays in a valid state — the class developer guards its invariants on every change.</button>
+        <button class="opt" data-i="2">Because setters are required to return a boolean.</button>
+        <div class="fb">Encapsulation puts validation in the setter, so no caller can push the object into an invalid state.</div>
+      </div>
+      <div class="q" data-tf="F">
+        <div class="prompt"><span class="tag">T / F</span>Getters and setters should be declared <code>static</code>.</div>
+        <button class="opt" data-v="T">True</button><button class="opt" data-v="F">False</button>
+        <div class="fb">False — they read/write a specific instance's fields, so they're <b>instance</b> methods (they use <code>this</code> implicitly).</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="topic" id="l5-diagram">
+    <h2>Lesson 5 · Diagram It — Objects on the Heap</h2>
+    <div class="concept">Ties L4 memory to L5 objects: an object variable on the stack holds an <b>address</b>; the object's <b>instance fields live inside the object on the heap</b>. Composition means one object's field can point to <i>another</i> object. Step through the OOP <code>Triangle</code> being built from three <code>Point</code>s.</div>
+    <div class="card">
+      <div class="two">
+        <pre id="l5-code" style="margin:0"></pre>
+        <div class="mem">
+          <div class="mem-col stack"><h4>▮ CALL STACK</h4><div id="l5g-stack"></div></div>
+          <div class="mem-col heap"><h4>▮ HEAP</h4><div id="l5g-heap"></div></div>
+        </div>
+      </div>
+      <div class="step-desc" id="l5g-desc"></div>
+      <div class="toolbar" style="justify-content:space-between">
+        <div><button class="btn ghost small" onclick="stepL5(-1)">◀ Back</button>
+        <button class="btn small" onclick="stepL5(1)">Next ▶</button>
+        <button class="btn ghost small" onclick="resetL5()">⟲ Restart</button></div>
+        <span class="score-badge" id="l5g-counter"></span>
+      </div>
+    </div>
+  </section>
+</main>
+</div>
+
+<!-- === LESSON 6 & 7 content injected by their modules === -->
+<div class="lesson" id="l6"></div>
+<div class="lesson" id="l7"></div>
+<div class="lesson" id="practice"></div>
+
+<footer>COMP210 Study Guide · Lessons 4–7 + Practice. Content mirrors the L4/L5/L6/L7 slides &amp; example files. No repo code was modified.</footer>
+
+<script src="COMP210_Study_Guide_L6.js"></script>
+<script src="COMP210_Study_Guide_L7.js"></script>
+<script src="COMP210_Study_Guide_Practice.js"></script>
+<script src="COMP210_Study_Guide.js"></script>
+</body>
+</html>

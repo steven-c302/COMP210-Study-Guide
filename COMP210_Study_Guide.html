@@ -113,12 +113,18 @@
 <body>
 <header>
   <h1>COMP210 · Data Structures &amp; Algorithms — Study Guide</h1>
-  <p>Active-recall review + interactive diagramming · Exam 2 covers Lessons 4–7</p>
+  <p>Active-recall review + interactive diagramming · Lessons 4–7 &amp; Lesson 9 (Lists)</p>
   <div class="lesson-bar">
     <button data-l="l4" class="active" onclick="showLesson('l4',this)">Lesson 4 · Stack, Heap, Recursion</button>
     <button data-l="l5" onclick="showLesson('l5',this)">Lesson 5 · OOP</button>
     <button data-l="l6" onclick="showLesson('l6',this)">Lesson 6 · Interfaces, ADTs &amp; Testing</button>
     <button data-l="l7" onclick="showLesson('l7',this)">Lesson 7 · Big-O &amp; Sorting</button>
+    <button data-l="l8" onclick="showLesson('l8',this)">Lesson 8 · Recursion &amp; Generics</button>
+    <button data-l="l9" onclick="showLesson('l9',this)">Lesson 9 · Lists</button>
+    <button data-l="l10" onclick="showLesson('l10',this)">Lesson 10 · Stacks &amp; Queues</button>
+    <button data-l="l11" onclick="showLesson('l11',this)">Lesson 11 · Trees &amp; BST</button>
+    <button data-l="l12" onclick="showLesson('l12',this)">Lesson 12 · Heaps &amp; Priority Queues</button>
+    <button data-l="l13" onclick="showLesson('l13',this)">Lesson 13 · AVL Trees</button>
     <button data-l="practice" onclick="showLesson('practice',this)">★ Practice</button>
   </div>
   <div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
@@ -654,15 +660,27 @@ Object      p = <span class="kw">new</span> <span class="fn">CartesianPoint</spa
 </main>
 </div>
 
-<!-- === LESSON 6 & 7 content injected by their modules === -->
+<!-- === Lessons 6, 7, 9 & Practice injected by their modules === -->
 <div class="lesson" id="l6"></div>
 <div class="lesson" id="l7"></div>
+<div class="lesson" id="l8"></div>
+<div class="lesson" id="l9"></div>
+<div class="lesson" id="l10"></div>
+<div class="lesson" id="l11"></div>
+<div class="lesson" id="l12"></div>
+<div class="lesson" id="l13"></div>
 <div class="lesson" id="practice"></div>
 
-<footer>COMP210 Study Guide · Lessons 4–7 + Practice. Content mirrors the L4/L5/L6/L7 slides &amp; example files. No repo code was modified.</footer>
+<footer>COMP210 Study Guide · Lessons 4–13 + Practice. Content mirrors the course slides &amp; example files.</footer>
 
 <script src="COMP210_Study_Guide_L6.js"></script>
 <script src="COMP210_Study_Guide_L7.js"></script>
+<script src="COMP210_Study_Guide_L8.js"></script>
+<script src="COMP210_Study_Guide_L9.js"></script>
+<script src="COMP210_Study_Guide_L10.js"></script>
+<script src="COMP210_Study_Guide_L11.js"></script>
+<script src="COMP210_Study_Guide_L12.js"></script>
+<script src="COMP210_Study_Guide_L13.js"></script>
 <script src="COMP210_Study_Guide_Practice.js"></script>
 <script src="COMP210_Study_Guide.js"></script>
 </body>

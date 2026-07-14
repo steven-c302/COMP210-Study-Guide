@@ -58,18 +58,21 @@ document.querySelectorAll('.q').forEach(q=>{
 
 /* ================= FILL IN THE BLANK ================= */
 function gradeInput(inp){
-  const ans=inp.dataset.answer.trim().toLowerCase().replace(/\s+/g,' ');
+  // data-answer may list several accepted answers separated by "|"
+  const alts=inp.dataset.answer.toLowerCase().split('|').map(s=>s.trim().replace(/\s+/g,' '));
   let val=inp.value.trim().toLowerCase().replace(/\s+/g,' ');
-  let ok=val===ans;
-  if(ans==='superclasses' && (val==='superclass'||val==='super classes'))ok=true;
+  let ok=alts.indexOf(val)!==-1;
+  if(alts.indexOf('superclasses')!==-1 && (val==='superclass'||val==='super classes'))ok=true;
   inp.style.borderColor=ok?'var(--green)':'var(--red)';
   return ok;
 }
 function checkFill(btn){
-  const inp=btn.parentElement.querySelector('.fillblank')||btn.closest('.card').querySelector('.fillblank');
+  // scope to the enclosing .q so multi-question cards grade the right input + feedback
+  const scope=btn.closest('.q')||btn.closest('.card');
+  const inp=scope.querySelector('.fillblank');
   const ok=gradeInput(inp);
-  const fb=btn.closest('.card').querySelector('.fb')||btn.parentElement.parentElement.querySelector('.fb');
-  markFillFB(fb,ok,inp.closest('.q')||inp.closest('.card'));
+  const fb=scope.querySelector('.fb');
+  markFillFB(fb,ok,scope);
 }
 function checkFillGroup(btn){
   const card=btn.closest('.card');

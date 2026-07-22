@@ -149,84 +149,143 @@ document.getElementById('l13').innerHTML = `
 
   <!-- ===================== CODE WRITING ===================== -->
   <section class="topic" id="l13-code">
-    <h2>Lesson 13 · Code Writing</h2>
-    <div class="concept">An AVL node is a BST node that also tracks height. Assume a node has <code>_value</code>, <code>_left</code>, <code>_right</code>, and a helper <code>height(node)</code> returning −1 for null.</div>
+    <h2>Lesson 13 · Code Writing <span class="muted" style="font-size:13px">— A8 recursive style</span></h2>
+    <div class="concept">This matches the <b>A8 AVL assignment</b>: there is <b>no separate Node class</b> — each <code>AVLTree&lt;T&gt;</code> object <i>is</i> a subtree, with fields <code>_value</code>, <code>_left</code>, <code>_right</code> (both <code>AVLTree&lt;T&gt;</code>), <code>_height</code>, <code>_size</code>. An <b>empty tree</b> is a real object (<code>_value=null</code>, <code>_height=-1</code>, <code>_size=0</code>), and a non-empty node's children are <b>empty AVLTree objects, never <code>null</code></b>. Rotations/fixes are methods on <code>this</code> that <b>return the new subtree root</b>.</div>
 
     <div class="card">
-      <h3>1. balanceFactor</h3>
-      <p>Write <code>balanceFactor(node)</code> = height of left subtree − height of right subtree. (Null child height = −1.)</p>
-      <textarea placeholder="int balanceFactor(Node node) { ... }"></textarea>
+      <h3>The rule that trips everyone up: recapture the result</h3>
+      <div class="q" data-mc="1">
+        <div class="prompt"><span class="tag">Multiple choice</span>Why write <code>_left = (AVLTree&lt;T&gt;) _left.insert(element);</code> instead of just <code>_left.insert(element);</code>?</div>
+        <button class="opt" data-i="0">To make it compile.</button>
+        <button class="opt" data-i="1">A rotation inside the child can change which object is the child's root, so you must reassign <code>_left</code> to the returned root — otherwise the rebalanced subtree is lost.</button>
+        <button class="opt" data-i="2">Because insert is static.</button>
+        <div class="fb">Self-balancing means <code>insert</code>/<code>remove</code> can return a <b>different</b> root object. Throw away the return value and any rotation below is lost. <b>Always recapture</b> the result into the child field. (This is why the interface methods return the tree.)</div>
+      </div>
+      <div class="q" data-tf="T">
+        <div class="prompt"><span class="tag">T / F</span>Because empty children are real AVLTree objects (not <code>null</code>), you can call <code>_left.height()</code> without a null check.</div>
+        <button class="opt" data-v="T">True</button><button class="opt" data-v="F">False</button>
+        <div class="fb">True — the empty-tree sentinel returns height −1 and size 0, so the recursive calls just work. That's the payoff of using empty objects instead of <code>null</code> children.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>1. updateHeightAndSize &amp; balanceFactor</h3>
+      <p>Recompute this node's stats from its children (empty child → height −1, size 0). Balance factor = left height − right height.</p>
+      <textarea placeholder="void updateHeightAndSize() { ... }  /  int balanceFactor() { ... }"></textarea>
       <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show solution</button></div>
       <div class="reveal">
-<pre><span class="kw">private int</span> <span class="fn">height</span>(Node n) {
-    <span class="kw">return</span> (n == <span class="kw">null</span>) ? -<span class="nm">1</span> : n._height;
+<pre><span class="kw">private void</span> <span class="fn">updateHeightAndSize</span>() {
+    _height = <span class="nm">1</span> + Math.max(_left.height(), _right.height());
+    _size   = <span class="nm">1</span> + _left.size() + _right.size();
 }
-<span class="kw">private int</span> <span class="fn">balanceFactor</span>(Node n) {
-    <span class="kw">return</span> <span class="fn">height</span>(n._left) - <span class="fn">height</span>(n._right);   <span class="cm">// BF = H(L) - H(R)</span>
+<span class="kw">private int</span> <span class="fn">balanceFactor</span>() {
+    <span class="kw">return</span> _left.height() - _right.height();   <span class="cm">// H(L) - H(R)</span>
 }</pre>
-        <div class="concept">A node is out of balance when <code>|balanceFactor| &gt; 1</code>. Treating a null child as height −1 makes a single leaf come out at height 0.</div>
+        <div class="concept">No null checks needed. Call <code>updateHeightAndSize()</code> after <b>any</b> structural change — after a rotation, and after an insert/remove recursion returns.</div>
       </div>
     </div>
 
     <div class="card">
-      <h3>2. Right rotation (fixes LL)</h3>
-      <p>Write <code>rotateRight(z)</code>: y = z's left child becomes the new root; z becomes y's right child; y's old right subtree is "handed off" to become z's left child. Return the new root.</p>
-      <textarea placeholder="Node rotateRight(Node z) { ... }"></textarea>
+      <h3>2. rotateRight &amp; rotateLeft (called on <code>this</code>)</h3>
+      <p>No parameter — they rotate <code>this</code> down and return the new root. Update heights on <code>this</code> <b>first</b> (it dropped), then on the new root.</p>
+      <textarea placeholder="AVLTree<T> rotateRight() { ... }"></textarea>
       <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show solution</button></div>
       <div class="reveal">
-<pre><span class="kw">private</span> Node <span class="fn">rotateRight</span>(Node z) {
-    Node y = z._left;
-    Node B = y._right;      <span class="cm">// the "closest child" to hand off</span>
-    y._right = z;           <span class="cm">// z becomes y's right child</span>
-    z._left  = B;           <span class="cm">// B becomes z's left child</span>
-    updateHeight(z);        <span class="cm">// recompute z then y (order matters)</span>
-    updateHeight(y);
-    <span class="kw">return</span> y;               <span class="cm">// y is the new subtree root</span>
+<pre><span class="kw">private</span> AVLTree&lt;T&gt; <span class="fn">rotateRight</span>() {
+    AVLTree&lt;T&gt; newRoot = _left;
+    _left = newRoot._right;        <span class="cm">// hand off newRoot's right subtree</span>
+    newRoot._right = <span class="kw">this</span>;        <span class="cm">// this drops to newRoot's right</span>
+    <span class="kw">this</span>.updateHeightAndSize();     <span class="cm">// this is now lower — update it first</span>
+    newRoot.updateHeightAndSize();
+    <span class="kw">return</span> newRoot;
+}
+<span class="kw">private</span> AVLTree&lt;T&gt; <span class="fn">rotateLeft</span>() {    <span class="cm">// mirror image</span>
+    AVLTree&lt;T&gt; newRoot = _right;
+    _right = newRoot._left;
+    newRoot._left = <span class="kw">this</span>;
+    <span class="kw">this</span>.updateHeightAndSize();
+    newRoot.updateHeightAndSize();
+    <span class="kw">return</span> newRoot;
 }</pre>
-        <div class="concept">"Hand off the closest child": <code>B</code> (y's right subtree) is between y and z in value, so it legally moves to become z's left child. Update z's height <i>before</i> y's, since z is now below y.</div>
+        <div class="concept">Same three pointer moves as the generic rotation, just as instance methods on the node being rotated down. <code>rotateLeft</code> is <code>rotateRight</code> with every left/right swapped.</div>
       </div>
     </div>
 
     <div class="card">
-      <h3>3. Left rotation (fixes RR)</h3>
-      <p>Write <code>rotateLeft(z)</code> — the mirror image of rotateRight.</p>
-      <textarea placeholder="Node rotateLeft(Node z) { ... }"></textarea>
+      <h3>3. fixIfImbalanced (the LL/RR/LR/RL dispatch)</h3>
+      <p>Update stats, read the balance factor, and if <code>|BF| &gt; 1</code> pick the case and rotate. Return the (possibly new) root.</p>
+      <textarea placeholder="AVLTree<T> fixIfImbalanced() { ... }"></textarea>
       <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show solution</button></div>
       <div class="reveal">
-<pre><span class="kw">private</span> Node <span class="fn">rotateLeft</span>(Node z) {
-    Node y = z._right;
-    Node B = y._left;       <span class="cm">// hand-off subtree</span>
-    y._left  = z;
-    z._right = B;
-    updateHeight(z);
-    updateHeight(y);
-    <span class="kw">return</span> y;
-}</pre>
-        <div class="concept">The double cases reuse these: <b>LR</b> = rotateLeft on the child, then rotateRight on z; <b>RL</b> = rotateRight on the child, then rotateLeft on z. Two singles make a double.</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>4. Rebalance dispatch</h3>
-      <p>Given an unbalanced node <code>z</code>, write the logic that picks the case and rotates. (LL / RR / LR / RL.)</p>
-      <textarea placeholder="Node rebalance(Node z) { ... }"></textarea>
-      <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show solution</button></div>
-      <div class="reveal">
-<pre><span class="kw">private</span> Node <span class="fn">rebalance</span>(Node z) {
-    <span class="ty">int</span> bf = <span class="fn">balanceFactor</span>(z);
-    <span class="kw">if</span> (bf &gt; <span class="nm">1</span>) {                         <span class="cm">// left-heavy</span>
-        <span class="kw">if</span> (<span class="fn">balanceFactor</span>(z._left) &lt; <span class="nm">0</span>)     <span class="cm">// LR</span>
-            z._left = <span class="fn">rotateLeft</span>(z._left);
-        <span class="kw">return</span> <span class="fn">rotateRight</span>(z);           <span class="cm">// LL (or finish LR)</span>
+<pre><span class="kw">private</span> AVLTree&lt;T&gt; <span class="fn">fixIfImbalanced</span>() {
+    updateHeightAndSize();
+    <span class="ty">int</span> bf = balanceFactor();
+    <span class="kw">if</span> (bf &gt; <span class="nm">1</span>) {                          <span class="cm">// left-heavy</span>
+        <span class="kw">if</span> (_left.balanceFactor() &lt; <span class="nm">0</span>)       <span class="cm">// LR: straighten child first</span>
+            _left = _left.rotateLeft();
+        <span class="kw">return</span> rotateRight();              <span class="cm">// LL (or finish LR)</span>
+    } <span class="kw">else if</span> (bf &lt; -<span class="nm">1</span>) {                 <span class="cm">// right-heavy</span>
+        <span class="kw">if</span> (_right.balanceFactor() &gt; <span class="nm">0</span>)      <span class="cm">// RL: straighten child first</span>
+            _right = _right.rotateRight();
+        <span class="kw">return</span> rotateLeft();               <span class="cm">// RR (or finish RL)</span>
     }
-    <span class="kw">if</span> (bf &lt; -<span class="nm">1</span>) {                        <span class="cm">// right-heavy</span>
-        <span class="kw">if</span> (<span class="fn">balanceFactor</span>(z._right) &gt; <span class="nm">0</span>)    <span class="cm">// RL</span>
-            z._right = <span class="fn">rotateRight</span>(z._right);
-        <span class="kw">return</span> <span class="fn">rotateLeft</span>(z);            <span class="cm">// RR (or finish RL)</span>
-    }
-    <span class="kw">return</span> z;                              <span class="cm">// already balanced</span>
+    <span class="kw">return</span> <span class="kw">this</span>;                          <span class="cm">// already balanced</span>
 }</pre>
-        <div class="concept">The sign of z's BF tells you left- vs right-heavy; the sign of the child's BF tells you whether it's a single (LL/RR) or double (LR/RL). The double cases just do one extra rotation on the child first.</div>
+        <div class="concept"><b>Order matters:</b> <code>updateHeightAndSize()</code> comes <b>before</b> reading <code>balanceFactor()</code>, or the BF is stale. The LR/RL child rotations use recapture (<code>_left = _left.rotateLeft()</code>) — same rule as insert.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>4. insert</h3>
+      <p>Empty tree → become a one-node tree (with empty children). Otherwise BST-recurse with <b>recapture</b>, then <code>fixIfImbalanced()</code>.</p>
+      <textarea placeholder="SelfBalancingBST<T> insert(T element) { ... }"></textarea>
+      <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show solution</button></div>
+      <div class="reveal">
+<pre><span class="kw">public</span> SelfBalancingBST&lt;T&gt; <span class="fn">insert</span>(T element) {
+    <span class="kw">if</span> (isEmpty()) {                     <span class="cm">// fill this empty node</span>
+        _value = element;
+        _left  = <span class="kw">new</span> AVLTree&lt;&gt;();
+        _right = <span class="kw">new</span> AVLTree&lt;&gt;();
+        _height = <span class="nm">0</span>; _size = <span class="nm">1</span>;
+        <span class="kw">return</span> <span class="kw">this</span>;
+    }
+    <span class="ty">int</span> cmp = element.compareTo(_value);
+    <span class="kw">if</span> (cmp &lt; <span class="nm">0</span>)  _left  = (AVLTree&lt;T&gt;) _left.insert(element);
+    <span class="kw">else if</span> (cmp &gt; <span class="nm">0</span>) _right = (AVLTree&lt;T&gt;) _right.insert(element);
+    <span class="kw">else</span> <span class="kw">return</span> <span class="kw">this</span>;                <span class="cm">// duplicate — no change</span>
+    <span class="kw">return</span> fixIfImbalanced();
+}</pre>
+        <div class="concept">A new value always lands in an <b>empty</b> AVLTree (height −1), which becomes a leaf with two empty children. Each recursion recaptures the child; the final <code>fixIfImbalanced()</code> rebalances on the way back up.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>5. remove (the three delete cases)</h3>
+      <p>BST-remove, then rebalance. When you find the node: leaf → become empty; one child → return the other; two children → copy the successor (min of the right subtree) and remove it from the right.</p>
+      <textarea placeholder="SelfBalancingBST<T> remove(T element) { ... }"></textarea>
+      <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show solution</button></div>
+      <div class="reveal">
+<pre><span class="kw">public</span> SelfBalancingBST&lt;T&gt; <span class="fn">remove</span>(T element) {
+    <span class="kw">if</span> (isEmpty()) <span class="kw">return</span> <span class="kw">this</span>;         <span class="cm">// not found</span>
+    <span class="ty">int</span> cmp = element.compareTo(_value);
+    <span class="kw">if</span> (cmp &lt; <span class="nm">0</span>)  _left  = (AVLTree&lt;T&gt;) _left.remove(element);
+    <span class="kw">else if</span> (cmp &gt; <span class="nm">0</span>) _right = (AVLTree&lt;T&gt;) _right.remove(element);
+    <span class="kw">else</span> {                              <span class="cm">// found it</span>
+        <span class="kw">if</span> (_left.isEmpty() &amp;&amp; _right.isEmpty()) {
+            _value = <span class="kw">null</span>; _left = <span class="kw">null</span>; _right = <span class="kw">null</span>;
+            _height = -<span class="nm">1</span>; _size = <span class="nm">0</span>;
+            <span class="kw">return</span> <span class="kw">this</span>;                    <span class="cm">// leaf → become empty</span>
+        } <span class="kw">else if</span> (_left.isEmpty())  <span class="kw">return</span> _right;   <span class="cm">// one child</span>
+        <span class="kw">else if</span> (_right.isEmpty()) <span class="kw">return</span> _left;
+        <span class="kw">else</span> {                          <span class="cm">// two children</span>
+            T successor = _right.findMin();
+            _value = successor;
+            _right = (AVLTree&lt;T&gt;) _right.remove(successor);
+        }
+    }
+    <span class="kw">return</span> fixIfImbalanced();
+}</pre>
+        <div class="concept">Two-children case: copy the <b>successor</b> (smallest value in the right subtree) into this node, then remove that successor from the right — it's guaranteed to be an easy leaf/one-child delete. Every branch ends by rebalancing with <code>fixIfImbalanced()</code>.</div>
       </div>
     </div>
   </section>

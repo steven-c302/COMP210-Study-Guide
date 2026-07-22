@@ -95,6 +95,9 @@
   table.match td{padding:6px;vertical-align:top}
   .match-term{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px;font-weight:600;font-size:14px}
   .match-def{width:100%}
+  table.cmp{width:100%;border-collapse:collapse;margin:4px 0 12px;font-size:14px}
+  table.cmp th,table.cmp td{border:1px solid var(--line);padding:8px 10px;text-align:left}
+  table.cmp th{background:var(--panel2);font-weight:700}
   .score-badge{font-size:12px;color:var(--muted)}
   .order-item{display:flex;align-items:center;justify-content:space-between;background:var(--panel2);
     border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:6px 0;font-size:14px}
@@ -125,6 +128,13 @@
     <button data-l="l11" onclick="showLesson('l11',this)">Lesson 11 · Trees &amp; BST</button>
     <button data-l="l12" onclick="showLesson('l12',this)">Lesson 12 · Heaps &amp; Priority Queues</button>
     <button data-l="l13" onclick="showLesson('l13',this)">Lesson 13 · AVL Trees</button>
+    <button data-l="l14" onclick="showLesson('l14',this)">Lesson 14 · Red-Black Trees</button>
+    <button data-l="l15" onclick="showLesson('l15',this)">Lesson 15 · Tree Comparison</button>
+    <button data-l="l16" onclick="showLesson('l16',this)">Lesson 16 · Hashing</button>
+    <button data-l="l17" onclick="showLesson('l17',this)">Lesson 17 · Hashing II</button>
+    <button data-l="l18" onclick="showLesson('l18',this)">Lesson 18 · Graphs</button>
+    <button data-l="l19" onclick="showLesson('l19',this)">Lesson 19 · Graph Algorithms</button>
+    <button data-l="l20" onclick="showLesson('l20',this)">Lesson 20 · Graph Algorithms II</button>
     <button data-l="practice" onclick="showLesson('practice',this)">★ Practice</button>
   </div>
   <div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
@@ -669,9 +679,16 @@ Object      p = <span class="kw">new</span> <span class="fn">CartesianPoint</spa
 <div class="lesson" id="l11"></div>
 <div class="lesson" id="l12"></div>
 <div class="lesson" id="l13"></div>
+<div class="lesson" id="l14"></div>
+<div class="lesson" id="l15"></div>
+<div class="lesson" id="l16"></div>
+<div class="lesson" id="l17"></div>
+<div class="lesson" id="l18"></div>
+<div class="lesson" id="l19"></div>
+<div class="lesson" id="l20"></div>
 <div class="lesson" id="practice"></div>
 
-<footer>COMP210 Study Guide · Lessons 4–13 + Practice. Content mirrors the course slides &amp; example files.</footer>
+<footer>COMP210 Study Guide · Lessons 4–20 + Practice. Content mirrors the course slides &amp; example files.</footer>
 
 <script src="COMP210_Study_Guide_L6.js"></script>
 <script src="COMP210_Study_Guide_L7.js"></script>
@@ -681,6 +698,13 @@ Object      p = <span class="kw">new</span> <span class="fn">CartesianPoint</spa
 <script src="COMP210_Study_Guide_L11.js"></script>
 <script src="COMP210_Study_Guide_L12.js"></script>
 <script src="COMP210_Study_Guide_L13.js"></script>
+<script src="COMP210_Study_Guide_L14.js"></script>
+<script src="COMP210_Study_Guide_L15.js"></script>
+<script src="COMP210_Study_Guide_L16.js"></script>
+<script src="COMP210_Study_Guide_L17.js"></script>
+<script src="COMP210_Study_Guide_L18.js"></script>
+<script src="COMP210_Study_Guide_L19.js"></script>
+<script src="COMP210_Study_Guide_L20.js"></script>
 <script src="COMP210_Study_Guide_Practice.js"></script>
 <script src="COMP210_Study_Guide.js"></script>
 </body>

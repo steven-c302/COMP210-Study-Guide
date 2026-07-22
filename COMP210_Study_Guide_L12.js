@@ -161,6 +161,20 @@ document.getElementById('l12').innerHTML = `
       <div id="hp-canvas" style="background:#0b1119;border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center;min-height:120px;overflow-x:auto"></div>
       <div class="step-desc" id="hp-note"></div>
     </div>
+    <div class="card">
+      <h3>buildHeap — step-by-step (bottom-up, O(n))</h3>
+      <p class="muted">Heapify <code>[100, 17, 36, 25, 19, 7, 3, 2, 1]</code> in place. Start at the last parent and sift-down each node up to the root. Watch the min (1) bubble all the way to index 0.</p>
+      <div class="muted" style="font-size:12px;margin-bottom:6px">Array (index above each cell); the two swapped cells are highlighted:</div>
+      <div id="bh-array" style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px"></div>
+      <div id="bh-canvas" style="background:#0b1119;border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center;min-height:180px;overflow-x:auto"></div>
+      <div class="step-desc" id="bh-note"></div>
+      <div class="toolbar" style="justify-content:space-between">
+        <div><button class="btn ghost small" onclick="bhStep(-1)">◀ Prev</button>
+        <button class="btn small" onclick="bhStep(1)">Next ▶</button>
+        <button class="btn ghost small" onclick="bhStep(-99)">⟲ Restart</button></div>
+        <span class="score-badge" id="bh-step"></span>
+      </div>
+    </div>
   </section>
 
   <!-- ===================== CODE WRITING ===================== -->
@@ -327,4 +341,102 @@ function hpRender(hi, note){
   c.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;min-width:'+Math.min(W,520)+'px;max-width:'+W+'px">'+edges+nodes+'</svg>';
   document.getElementById('hp-note').innerHTML=note||'Root (index 0) is the minimum. Children of i are 2i+1 and 2i+2.';
 }
+/* ============================================================
+   buildHeap step-by-step animation (bottom-up heapify, O(n))
+   Fixed complete-tree positions; only values/highlights change.
+   ============================================================ */
+const BH_POS={0:[230,28],1:[125,88],2:[335,88],3:[70,148],4:[180,148],5:[290,148],6:[400,148],7:[45,208],8:[105,208]};
+const BH_EDGES=[[0,1],[0,2],[1,3],[1,4],[2,5],[2,6],[3,7],[3,8]];
+const BH_STEPS=[
+  {arr:[100,17,36,25,19,7,3,2,1],hi:[],desc:`Start. buildHeap heapifies <b>bottom-up</b>: begin at the last parent (index 3) and sift-down each node up to the root (index 0).`},
+  {arr:[100,17,36,1,19,7,3,2,25],hi:[3,8],desc:`<b>Index 3 (25):</b> its smaller child is 1 → swap. 25 sinks to a leaf; 1 rises to index 3.`},
+  {arr:[100,17,3,1,19,7,36,2,25],hi:[2,6],desc:`<b>Index 2 (36):</b> its smaller child is 3 → swap. 36 sinks to index 6.`},
+  {arr:[100,1,3,17,19,7,36,2,25],hi:[1,3],desc:`<b>Index 1 (17):</b> its smaller child is 1 → swap. Keep sifting 17 down from index 3.`},
+  {arr:[100,1,3,2,19,7,36,17,25],hi:[3,7],desc:`Continue: index 3 (17) vs children 2, 25 → swap with 2. 17 settles at a leaf.`},
+  {arr:[1,100,3,2,19,7,36,17,25],hi:[0,1],desc:`<b>Index 0 (100 — the root):</b> smaller child is 1 → swap. <b>1 becomes the root</b> (the minimum)! 100 keeps sinking.`},
+  {arr:[1,2,3,100,19,7,36,17,25],hi:[1,3],desc:`Continue: index 1 (100) vs 2, 19 → swap with 2.`},
+  {arr:[1,2,3,17,19,7,36,100,25],hi:[3,7],desc:`Continue: index 3 (100) vs 17, 25 → swap with 17. ✅ <b>Done</b> — valid min-heap, root = 1. buildHeap is <b>O(n)</b>, cheaper than n separate O(log n) inserts.`}
+];
+let bhIdx=0, bhAnimating=false;
+function bhCell(v,i,hi){
+  const on=hi.indexOf(i)!==-1;
+  const border=i===0?'var(--green)':(on?'var(--amber)':'var(--stack)');
+  const bg=i===0?'rgba(21,153,87,.2)':(on?'rgba(214,137,16,.28)':'rgba(46,134,222,.14)');
+  return '<div style="text-align:center;transition:transform .5s ease"><div style="font-size:10px;color:var(--muted)">'+i+'</div><div style="background:'+bg+';border:1px solid '+border+';border-radius:6px;padding:6px 10px;font-family:monospace;font-weight:700;min-width:34px">'+v+'</div></div>';
+}
+function bhRenderArray(arr,hi){
+  document.getElementById('bh-array').innerHTML=arr.map((v,i)=>bhCell(v,i,hi)).join('');
+}
+// mv (optional) = {a,b,valA,valB,t}: draw the two swapping nodes at interpolated positions
+function bhDrawTree(arr,hi,mv){
+  let e='',n='';
+  BH_EDGES.forEach(pr=>{ const A=BH_POS[pr[0]],B=BH_POS[pr[1]]; e+='<line x1="'+A[0]+'" y1="'+A[1]+'" x2="'+B[0]+'" y2="'+B[1]+'" stroke="#2b3c50" stroke-width="1.5"/>'; });
+  const drawNode=(x,y,v,on)=>{
+    let fill='rgba(46,134,222,.16)',stroke='#2e86de';
+    if(on){fill='rgba(214,137,16,.42)';stroke='#d68910';}
+    n+='<circle cx="'+x+'" cy="'+y+'" r="17" fill="'+fill+'" stroke="'+stroke+'" stroke-width="'+(on?4:2.5)+'"/>';
+    n+='<text x="'+x+'" y="'+(y+5)+'" text-anchor="middle" fill="#e8eef5" font-size="13" font-weight="700">'+v+'</text>';
+  };
+  arr.forEach((v,i)=>{
+    if(mv && (i===mv.a||i===mv.b)) return;   // movers drawn last, on top
+    const p=BH_POS[i], on=hi.indexOf(i)!==-1;
+    let fill='rgba(46,134,222,.16)',stroke='#2e86de';
+    if(i===0){fill='rgba(21,153,87,.3)';stroke='#159957';}
+    if(on){fill='rgba(214,137,16,.42)';stroke='#d68910';}
+    n+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="17" fill="'+fill+'" stroke="'+stroke+'" stroke-width="'+(on?4:2.5)+'"/>';
+    n+='<text x="'+p[0]+'" y="'+(p[1]+5)+'" text-anchor="middle" fill="#e8eef5" font-size="13" font-weight="700">'+v+'</text>';
+  });
+  if(mv){
+    const A=BH_POS[mv.a], B=BH_POS[mv.b];
+    // node ending at a came from b; node ending at b came from a
+    drawNode(B[0]+(A[0]-B[0])*mv.t, B[1]+(A[1]-B[1])*mv.t, mv.valA, true);
+    drawNode(A[0]+(B[0]-A[0])*mv.t, A[1]+(B[1]-A[1])*mv.t, mv.valB, true);
+  }
+  document.getElementById('bh-canvas').innerHTML='<svg viewBox="0 0 460 245" style="width:100%;max-width:520px">'+e+n+'</svg>';
+}
+function bhRender(){
+  const s=BH_STEPS[bhIdx];
+  bhRenderArray(s.arr,s.hi);
+  bhDrawTree(s.arr,s.hi,null);
+  document.getElementById('bh-note').innerHTML=s.desc;
+  document.getElementById('bh-step').textContent='Step '+(bhIdx+1)+' / '+BH_STEPS.length;
+}
+function bhAnimateArraySwap(a,b){
+  const cells=document.querySelectorAll('#bh-array > div');
+  const ca=cells[a], cb=cells[b]; if(!ca||!cb) return;
+  const dx=cb.getBoundingClientRect().left-ca.getBoundingClientRect().left;
+  ca.style.transition='none'; cb.style.transition='none';
+  ca.style.transform='translateX('+dx+'px)'; cb.style.transform='translateX('+(-dx)+'px)';
+  ca.style.position='relative'; cb.style.position='relative'; ca.style.zIndex='5'; cb.style.zIndex='5';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    ca.style.transition='transform .5s ease'; cb.style.transition='transform .5s ease';
+    ca.style.transform='translateX(0)'; cb.style.transform='translateX(0)';
+  }));
+}
+function bhAnimateForward(){
+  const s=BH_STEPS[bhIdx], a=s.hi[0], b=s.hi[1];
+  document.getElementById('bh-note').innerHTML=s.desc;
+  document.getElementById('bh-step').textContent='Step '+(bhIdx+1)+' / '+BH_STEPS.length;
+  bhRenderArray(s.arr,s.hi);
+  bhAnimateArraySwap(a,b);
+  bhAnimating=true;
+  const valA=s.arr[a], valB=s.arr[b], start=performance.now(), dur=520;
+  (function frame(now){
+    let t=Math.min(1,(now-start)/dur);
+    const te=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;   // easeInOutQuad
+    bhDrawTree(s.arr,s.hi,{a,b,valA,valB,t:te});
+    if(t<1) requestAnimationFrame(frame);
+    else { bhAnimating=false; bhDrawTree(s.arr,s.hi,null); }
+  })(performance.now());
+}
+function bhStep(d){
+  if(bhAnimating) return;
+  if(d===-99){ bhIdx=0; bhRender(); return; }
+  const target=Math.max(0,Math.min(BH_STEPS.length-1,bhIdx+d));
+  if(target===bhIdx) return;
+  if(d>0 && BH_STEPS[target].hi.length===2){ bhIdx=target; bhAnimateForward(); }
+  else { bhIdx=target; bhRender(); }
+}
+
 hpRender([]);
+bhRender();

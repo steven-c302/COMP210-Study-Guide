@@ -15,6 +15,13 @@ Covers:
 - Lesson 11 — Binary Trees, tree traversals (pre/in/post/level), Binary Search Trees + interactive traversal visualizer
 - Lesson 12 — Heaps, Priority Queues, Binary Min Trees, Binary Heaps (array), buildHeap + interactive min-heap visualizer
 - Lesson 13 — AVL Trees: balance factor, the four rebalancing cases (LL/RR/LR/RL) & rotations + interactive rotation visualizer
+- Lesson 14 — Red-Black Trees: the five color invariants, insertion (recolor vs rotate), double-black deletion + interactive colored-tree case viewer, animated rotation & deletion walkthroughs
+- Lesson 15 — Red-Black Trees II: O(log n) complexity & real-world uses, comparing BST/AVL/RB, binary-tree taxonomy (full/complete/perfect/balanced), RB & AVL node fields
+- Lesson 16 — Hashing: hash tables/functions, load factor, chaining, linear & quadratic probing, primary/secondary clustering, double hashing + interactive hash-table probing visualizer
+- Lesson 17 — Hashing II: load factor, table resizing & thresholds (Tc=1.0 / Tp=0.75), worst-case vs amortized complexity, chaining vs probing, data-structure comparison + resize/rehash code
+- Lesson 18 — Graphs: heap/quick sort recap, graph basics (V/E/n/m), properties (edge/structural/density), adjacency matrix vs list, sparsity + interactive graph↔matrix↔list explorer
+- Lesson 19 — Graph Algorithms: topological sort (DAGs, in/out-degree, Kahn's algorithm), BFS shortest paths, O(V+E) complexity + interactive step-through BFS visualizer
+- Lesson 20 — Graph Algorithms II: edge relaxation, Dijkstra's (greedy, min-heap PQ, O((n+m)log n)), Bellman-Ford (negative weights & cycle detection, O(nm)), algorithm comparison, graph terminology + interactive step-through Dijkstra visualizer
 - Practice — ramped time/space complexity problems + code-writing challenges
 
 ## Files
@@ -28,4 +35,11 @@ Covers:
 - `COMP210_Study_Guide_L11.js` — Lesson 11 module (with tree-traversal visualizer)
 - `COMP210_Study_Guide_L12.js` — Lesson 12 module (with binary min-heap visualizer)
 - `COMP210_Study_Guide_L13.js` — Lesson 13 module (with AVL rotation visualizer)
+- `COMP210_Study_Guide_L14.js` — Lesson 14 module (with red-black colored-tree case viewer + animated rotation/deletion walkthroughs)
+- `COMP210_Study_Guide_L15.js` — Lesson 15 module (tree comparison & taxonomy)
+- `COMP210_Study_Guide_L16.js` — Lesson 16 module (with interactive hash-table probing visualizer)
+- `COMP210_Study_Guide_L17.js` — Lesson 17 module (load factor, resizing, complexity, comparisons)
+- `COMP210_Study_Guide_L18.js` — Lesson 18 module (with interactive graph↔matrix↔list explorer)
+- `COMP210_Study_Guide_L19.js` — Lesson 19 module (with interactive step-through BFS visualizer)
+- `COMP210_Study_Guide_L20.js` — Lesson 20 module (with interactive step-through Dijkstra visualizer)
 - `COMP210_Study_Guide_Practice.js` — Practice module

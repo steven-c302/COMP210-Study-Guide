@@ -87,6 +87,20 @@ document.getElementById('l19').innerHTML = `
         <div class="fb"><b>4.</b> Only vertex <b>1</b> has in-degree 0, so it's always first. Vertex 4 needs both 2 and 3 first; vertices 5 and 6 both need 4 first. So every order looks like <code>1 · (2,3 in either order) · 4 · (5,6 in either order)</code> = 2 × 2 = <b>4</b>. E.g. 1,2,3,4,5,6 and 1,3,2,4,6,5.</div>
       </div>
     </div>
+    <div class="card">
+      <h3>Animated walkthrough — Kahn's algorithm step-by-step</h3>
+      <p class="muted">Same graph. Each step dequeues an in-degree-0 vertex (orange), adds it to the topo order, and "removes" its out-edges — decrementing each neighbor's in-degree. When a neighbor hits 0, it turns amber and joins the queue. The number above each vertex is its current in-degree.</p>
+      <div id="ts-canvas" style="background:#0b1119;border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center;overflow-x:auto"></div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin-top:10px">
+        <div><div class="muted" style="font-size:12px;margin-bottom:4px">0-in-degree queue (front → back):</div><div id="ts-queue" style="font-family:monospace;font-weight:700"></div></div>
+        <div style="flex:1;min-width:180px"><div class="muted" style="font-size:12px;margin-bottom:4px">Topological order so far:</div><div id="ts-out" style="font-family:monospace;font-weight:700;color:#7bd88f"></div></div>
+      </div>
+      <div class="toolbar" style="margin-top:8px">
+        <button class="btn small" onclick="tsStep()">Next ▶</button>
+        <button class="btn ghost small" onclick="tsStart()">⟲ Restart</button>
+      </div>
+      <div class="step-desc" id="ts-note"></div>
+    </div>
   </section>
 
   <!-- ===================== BFS ===================== -->
@@ -122,6 +136,17 @@ d(s) = <span class="nm">0</span>; mark s visited; enqueue s
         <button class="opt" data-i="1">A graph can have cycles, so without marking visited you'd revisit vertices forever.</button>
         <button class="opt" data-i="2">Trees don't use a queue.</button>
         <div class="fb">A tree has no cycles, so you never reach the same node twice. A graph "is not a tree anymore ⇒ may be cyclic" (slide 22), so the visited set stops infinite revisiting and keeps each vertex's <b>first</b> (shortest) distance.</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Insertion order (slides 29–30)</h3>
+      <div class="concept">If you enqueue a vertex's neighbors in a <b>different order</b> (e.g. reverse-alphabetical instead of alphabetical), the <b>shortest-path tree</b> can change — a vertex reachable from two vertices at the same level may get a different predecessor. But the <b>distances</b> d(v) stay the <b>same</b>, because the shortest hop-count doesn't depend on tie-breaking.</div>
+      <div class="q" data-mc="2">
+        <div class="prompt"><span class="tag">Multiple choice</span>You rerun BFS enqueuing neighbors in reverse order. What changes?</div>
+        <button class="opt" data-i="0">Both the tree and the distances change.</button>
+        <button class="opt" data-i="1">Neither changes.</button>
+        <button class="opt" data-i="2">The shortest-path <b>tree</b> may change, but the <b>distances</b> stay the same.</button>
+        <div class="fb">Slide 30: tree = <b>NO</b> (not the same), distances = <b>YES</b> (same). Tie-breaking on enqueue order only affects <i>which</i> equal-length path you record (the predecessor), never the length itself.</div>
       </div>
     </div>
   </section>
@@ -335,3 +360,58 @@ function gbRender(note){
   document.getElementById('gb-note').innerHTML=note||'';
 }
 gbStart('V');
+
+/* ============================================================
+   Interactive topological-sort (Kahn's algorithm) step-through
+   Graph: 1->2,1->3,2->4,2->5,3->4,3->6,4->5,4->6
+   ============================================================ */
+const TS_POS={1:[45,90],2:[130,45],3:[130,135],4:[195,90],5:[262,45],6:[262,135]};
+const TS_ADJ={1:[2,3],2:[4,5],3:[4,6],4:[5,6],5:[],6:[]};
+const TS_NODES=[1,2,3,4,5,6];
+let ts={};
+function tsStart(){
+  ts={indeg:{},queue:[],out:[],removed:{},cur:null,justZero:[]};
+  TS_NODES.forEach(v=>ts.indeg[v]=0);
+  TS_NODES.forEach(u=>TS_ADJ[u].forEach(v=>ts.indeg[v]++));
+  TS_NODES.forEach(v=>{ if(ts.indeg[v]===0) ts.queue.push(v); });
+  tsRender('Setup: computed every in-degree. Vertex <b>1</b> is the only one with in-degree 0, so it starts in the queue. Press Next.');
+}
+function tsStep(){
+  if(ts.queue.length===0){
+    const msg = ts.out.length===TS_NODES.length
+      ? 'Queue empty and all '+TS_NODES.length+' vertices are in the order — a valid topological sort! Result: '+ts.out.join(', ')+'.'
+      : 'Queue empty but only '+ts.out.length+'/'+TS_NODES.length+' vertices ordered — a cycle would cause this (not here).';
+    ts.cur=null; ts.justZero=[]; tsRender(msg); return;
+  }
+  const u=ts.queue.shift(); ts.cur=u; ts.out.push(u); ts.removed[u]=true; ts.justZero=[];
+  const dropped=[];
+  TS_ADJ[u].forEach(v=>{ ts.indeg[v]--; dropped.push(v+'→'+ts.indeg[v]); if(ts.indeg[v]===0){ ts.queue.push(v); ts.justZero.push(v); } });
+  let msg='Dequeued <b>'+u+'</b> → added to the order. Removed its out-edges, updating in-degrees: '+(dropped.length?dropped.join(', '):'(none)')+'. ';
+  msg += ts.justZero.length ? 'Now at in-degree 0 → enqueued: '+ts.justZero.join(', ')+'.' : 'No neighbor reached 0 this step.';
+  tsRender(msg);
+}
+function tsRender(note){
+  let e='',n='';
+  const defs='<defs><marker id="tsar" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#7f93a8"/></marker></defs>';
+  TS_NODES.forEach(u=>TS_ADJ[u].forEach(v=>{
+    const A=TS_POS[u],B=TS_POS[v],dx=B[0]-A[0],dy=B[1]-A[1],len=Math.hypot(dx,dy),r=15;
+    const gone=ts.removed[u];
+    const x1=A[0]+dx/len*r,y1=A[1]+dy/len*r,x2=B[0]-dx/len*r,y2=B[1]-dy/len*r;
+    e+='<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+(gone?'#22303f':'#7f93a8')+'" stroke-width="1.5" marker-end="url(#tsar)" opacity="'+(gone?0.4:1)+'"/>';
+  }));
+  TS_NODES.forEach(v=>{ const p=TS_POS[v];
+    let fill='rgba(46,134,222,.18)',stroke='#2e86de',sw=2;
+    if(ts.queue.indexOf(v)!==-1){ fill='rgba(214,137,16,.3)'; stroke='#d68910'; }
+    if(ts.justZero.indexOf(v)!==-1){ sw=4; }
+    if(ts.removed[v]){ fill='rgba(21,153,87,.28)'; stroke='#159957'; }
+    if(v===ts.cur){ stroke='#e07b00'; sw=4.5; }
+    n+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="15" fill="'+fill+'" stroke="'+stroke+'" stroke-width="'+sw+'"/>';
+    n+='<text x="'+p[0]+'" y="'+(p[1]+4)+'" text-anchor="middle" fill="#e8eef5" font-size="12" font-weight="700">'+v+'</text>';
+    if(!ts.removed[v]) n+='<text x="'+p[0]+'" y="'+(p[1]-20)+'" text-anchor="middle" fill="#c9a13b" font-size="11" font-weight="700">in:'+ts.indeg[v]+'</text>';
+  });
+  document.getElementById('ts-canvas').innerHTML='<svg viewBox="0 0 310 180" style="width:100%;max-width:360px">'+defs+e+n+'</svg>';
+  document.getElementById('ts-queue').innerHTML = ts.queue.length ? ts.queue.map(v=>'<span style="display:inline-block;background:rgba(214,137,16,.25);border:1px solid #d68910;border-radius:6px;padding:2px 9px;margin:2px">'+v+'</span>').join('') : '<span class="muted">(empty)</span>';
+  document.getElementById('ts-out').innerHTML = ts.out.length ? ts.out.join(' · ') : '<span class="muted">(none yet)</span>';
+  document.getElementById('ts-note').innerHTML=note||'';
+}
+tsStart();

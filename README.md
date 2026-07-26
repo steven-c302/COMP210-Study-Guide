@@ -22,6 +22,7 @@ Covers:
 - Lesson 18 — Graphs: heap/quick sort recap, graph basics (V/E/n/m), properties (edge/structural/density), adjacency matrix vs list, sparsity + interactive graph↔matrix↔list explorer
 - Lesson 19 — Graph Algorithms: topological sort (DAGs, in/out-degree, Kahn's algorithm), BFS shortest paths, O(V+E) complexity + interactive step-through BFS visualizer
 - Lesson 20 — Graph Algorithms II: edge relaxation, Dijkstra's (greedy, min-heap PQ, O((n+m)log n)), Bellman-Ford (negative weights & cycle detection, O(nm)), algorithm comparison, graph terminology + interactive step-through Dijkstra visualizer
+- Lesson 21 — Minimum Spanning Trees: spanning trees & MSTs, Kruskal's (union-find, sparse graphs), Prim's (tree growth, dense graphs), greedy strategy + interactive Kruskal's/Prim's MST builder
 - Practice — ramped time/space complexity problems + code-writing challenges
 
 ## Files
@@ -42,4 +43,5 @@ Covers:
 - `COMP210_Study_Guide_L18.js` — Lesson 18 module (with interactive graph↔matrix↔list explorer)
 - `COMP210_Study_Guide_L19.js` — Lesson 19 module (with interactive step-through BFS visualizer)
 - `COMP210_Study_Guide_L20.js` — Lesson 20 module (with interactive step-through Dijkstra visualizer)
+- `COMP210_Study_Guide_L21.js` — Lesson 21 module (with interactive Kruskal's/Prim's MST builder)
 - `COMP210_Study_Guide_Practice.js` — Practice module

@@ -5,6 +5,10 @@ Interactive study guide for COMP210 (Data Structures & Algorithms).
 Open **COMP210_Study_Guide.html** in any web browser. All files must stay in the same folder.
 
 Covers:
+- ★ Final Prep — data-structures taxonomy (clickable overview of the L21 slide: ADT vs implementation), master complexity cheat-sheet, mixed cross-course rapid-fire, and an exam checklist
+- Lesson 1 — Intro: data structures & algorithms, time vs space complexity, primary/secondary storage, number systems (binary/hex/octal), bits/bytes & ASCII
+- Lesson 2 — Java: execution model (javac → JVM/JIT), primitives vs reference types, Strings & arrays, control flow
+- Lesson 3 — Java II: Scanner input, reading docs, methods & access modifiers, pair programming roles
 - Lesson 4 — Scope, Stack & Heap memory, Recursion, Debugger (+ interactive stack/heap diagramming)
 - Lesson 5 — OOP: classes, objects, instance vs class members, is-a, getters/setters
 - Lesson 6 — Interfaces, ADTs, encapsulation, unit testing (JUnit)
@@ -28,6 +32,10 @@ Covers:
 ## Files
 - `COMP210_Study_Guide.html` — main page (shell + Lessons 4 & 5)
 - `COMP210_Study_Guide.js` — shared engine (navigation, grading, diagram renderers)
+- `COMP210_Study_Guide_Final.js` — ★ Final Prep (clickable DS taxonomy, complexity cheat-sheet, mixed practice)
+- `COMP210_Study_Guide_L1.js` — Lesson 1 module
+- `COMP210_Study_Guide_L2.js` — Lesson 2 module
+- `COMP210_Study_Guide_L3.js` — Lesson 3 module
 - `COMP210_Study_Guide_L6.js` — Lesson 6 module
 - `COMP210_Study_Guide_L7.js` — Lesson 7 module (with bubble-sort visualizer)
 - `COMP210_Study_Guide_L8.js` — Lesson 8 module (with Fibonacci recursion-tree visualizer)

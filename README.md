@@ -5,6 +5,7 @@ Interactive study guide for COMP210 (Data Structures & Algorithms).
 Open **COMP210_Study_Guide.html** in any web browser. All files must stay in the same folder.
 
 Covers:
+- ★ Quizzes + Practice Exams — all 4 in-class quizzes (real questions + correct answers) plus two original full-length practice finals matching their style and difficulty
 - ★ Final Prep — data-structures taxonomy (clickable overview of the L21 slide: ADT vs implementation), master complexity cheat-sheet, mixed cross-course rapid-fire, and an exam checklist
 - Lesson 1 — Intro: data structures & algorithms, time vs space complexity, primary/secondary storage, number systems (binary/hex/octal), bits/bytes & ASCII
 - Lesson 2 — Java: execution model (javac → JVM/JIT), primitives vs reference types, Strings & arrays, control flow
@@ -33,6 +34,7 @@ Covers:
 - `COMP210_Study_Guide.html` — main page (shell + Lessons 4 & 5)
 - `COMP210_Study_Guide.js` — shared engine (navigation, grading, diagram renderers)
 - `COMP210_Study_Guide_Final.js` — ★ Final Prep (clickable DS taxonomy, complexity cheat-sheet, mixed practice)
+- `COMP210_Study_Guide_Quizzes.js` — ★ Quizzes 1–4 (real questions + answers) and two practice exams
 - `COMP210_Study_Guide_L1.js` — Lesson 1 module
 - `COMP210_Study_Guide_L2.js` — Lesson 2 module
 - `COMP210_Study_Guide_L3.js` — Lesson 3 module

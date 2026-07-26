@@ -5,7 +5,8 @@
    ============================================================ */
 document.getElementById('l21').innerHTML = `
 <nav class="topics">
-  <button class="active" onclick="showTopic(this,'l21-basics')">MST Basics</button>
+  <button class="active" onclick="showTopic(this,'l21-dsmap')">DS Overview ★</button>
+  <button onclick="showTopic(this,'l21-basics')">MST Basics</button>
   <button onclick="showTopic(this,'l21-kruskal')">Kruskal's</button>
   <button onclick="showTopic(this,'l21-prim')">Prim's</button>
   <button onclick="showTopic(this,'l21-compare')">Compare</button>
@@ -14,8 +15,95 @@ document.getElementById('l21').innerHTML = `
 </nav>
 <main>
 
+  <!-- ===================== DS OVERVIEW MAP ===================== -->
+  <section class="topic active" id="l21-dsmap">
+    <h2>Lesson 21 · Data Structures Overview ★</h2>
+    <div class="concept">The big-picture map of everything in the course, grouped into four families. Read the arrows carefully: an <b>arrow points FROM an implementation TO the ADT it implements</b> (the arrowhead sits on the ADT). <b>ADT</b> = <i>what</i> it does (the interface); <b>implementation</b> = <i>how</i> it's built.</div>
+    <div class="card">
+      <div style="display:flex;gap:18px;flex-wrap:wrap;font-size:13px;margin-bottom:6px">
+        <span><span style="display:inline-block;width:26px;height:15px;border:2px solid #ff8a80;border-radius:4px;vertical-align:middle"></span> = ADT (what)</span>
+        <span><span style="display:inline-block;width:26px;height:15px;border:1.6px dashed #8aa0b6;border-radius:4px;vertical-align:middle"></span> = implementation (how)</span>
+        <span style="color:#ff8a80">──▶ = implements (points to the ADT)</span>
+      </div>
+      <svg viewBox="0 0 1000 560" style="width:100%;background:#0b1119;border:1px solid var(--line);border-radius:10px">
+        <defs><marker id="impl21" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#ff8a80"/></marker></defs>
+        <style>
+          .adt{fill:#141c27;stroke:#ff8a80;stroke-width:2.5;rx:8}
+          .impl{fill:#141c27;stroke:#8aa0b6;stroke-width:1.6;stroke-dasharray:5 3;rx:8}
+          .bx{fill:#e8eef5;font-size:13px;font-weight:700;text-anchor:middle;font-family:sans-serif}
+          .fam{fill:#e8eef5;font-size:20px;font-weight:800;text-anchor:middle;font-family:sans-serif;text-decoration:underline}
+          .sub{fill:#c7d2de;font-size:14px;font-weight:700;text-anchor:middle;font-family:sans-serif}
+          .arw{stroke:#ff8a80;stroke-width:2.4;fill:none;marker-end:url(#impl21);opacity:.85}
+        </style>
+
+        <!-- ===== LINEAR ===== -->
+        <rect x="18" y="70" width="300" height="470" rx="14" fill="rgba(232,121,198,.07)" stroke="rgba(232,121,198,.5)"/>
+        <text x="168" y="108" class="fam">Linear</text>
+        <line class="arw" x1="92" y1="452" x2="76" y2="192"/>
+        <line class="arw" x1="98" y1="452" x2="168" y2="192"/>
+        <line class="arw" x1="104" y1="452" x2="266" y2="192"/>
+        <line class="arw" x1="232" y1="452" x2="82" y2="192"/>
+        <line class="arw" x1="238" y1="452" x2="174" y2="192"/>
+        <line class="arw" x1="244" y1="452" x2="272" y2="192"/>
+        <rect class="adt" x="38" y="148" width="76" height="42"/><text class="bx" x="76" y="174">List</text>
+        <rect class="adt" x="132" y="148" width="76" height="42"/><text class="bx" x="170" y="174">Stack</text>
+        <rect class="adt" x="230" y="148" width="80" height="42"/><text class="bx" x="270" y="174">Queue</text>
+        <rect class="impl" x="36" y="452" width="112" height="42"/><text class="bx" x="92" y="478">ArrayList</text>
+        <rect class="impl" x="176" y="452" width="120" height="42"/><text class="bx" x="236" y="478">LinkedList</text>
+
+        <!-- ===== TREES ===== -->
+        <rect x="338" y="70" width="324" height="470" rx="14" fill="rgba(167,139,250,.07)" stroke="rgba(167,139,250,.5)"/>
+        <text x="500" y="108" class="fam">Trees</text>
+        <!-- Binary Trees sub -->
+        <rect x="352" y="128" width="298" height="168" rx="10" fill="rgba(255,255,255,.03)" stroke="rgba(167,139,250,.4)"/>
+        <text x="501" y="150" class="sub">Binary Trees</text>
+        <line class="arw" x1="520" y1="200" x2="470" y2="216"/>
+        <line class="arw" x1="520" y1="256" x2="470" y2="240"/>
+        <rect class="adt" x="368" y="200" width="100" height="52"/><text class="bx" x="418" y="222">Priority</text><text class="bx" x="418" y="240">Queue</text>
+        <rect class="impl" x="520" y="182" width="116" height="34"/><text class="bx" x="578" y="203">Binary Min Tree</text>
+        <rect class="impl" x="520" y="240" width="116" height="34"/><text class="bx" x="578" y="261">Binary Heap</text>
+        <!-- BSTs sub -->
+        <rect x="352" y="320" width="298" height="200" rx="10" fill="rgba(255,255,255,.03)" stroke="rgba(167,139,250,.4)"/>
+        <text x="501" y="344" class="sub">BSTs (Binary Search Trees)</text>
+        <line class="arw" x1="430" y1="452" x2="482" y2="410"/>
+        <line class="arw" x1="576" y1="452" x2="524" y2="410"/>
+        <rect x="446" y="366" width="110" height="40" rx="8" fill="#141c27" stroke="#a78bfa" stroke-width="2.2"/><text class="bx" x="501" y="391">BST</text>
+        <rect class="impl" x="372" y="452" width="116" height="44"/><text class="bx" x="430" y="479">AVL Tree</text>
+        <rect class="impl" x="516" y="452" width="128" height="44"/><text class="bx" x="580" y="479">Red-Black Tree</text>
+
+        <!-- ===== MAPS ===== -->
+        <rect x="682" y="70" width="300" height="200" rx="14" fill="rgba(96,165,250,.08)" stroke="rgba(96,165,250,.55)"/>
+        <text x="832" y="108" class="fam">Maps</text>
+        <line class="arw" x1="856" y1="178" x2="796" y2="178"/>
+        <rect class="adt" x="708" y="156" width="86" height="46"/><text class="bx" x="751" y="184">Map</text>
+        <rect class="impl" x="856" y="156" width="106" height="46"/><text class="bx" x="909" y="184">HashMap</text>
+
+        <!-- ===== GRAPHS ===== -->
+        <rect x="682" y="290" width="300" height="250" rx="14" fill="rgba(45,212,191,.08)" stroke="rgba(45,212,191,.55)"/>
+        <text x="832" y="328" class="fam">Graphs</text>
+        <line class="arw" x1="846" y1="388" x2="792" y2="418"/>
+        <line class="arw" x1="846" y1="474" x2="792" y2="448"/>
+        <rect class="adt" x="702" y="412" width="90" height="46"/><text class="bx" x="747" y="440">Graph</text>
+        <rect class="impl" x="846" y="368" width="124" height="40"/><text class="bx" x="908" y="393">Adjacency Matrix</text>
+        <rect class="impl" x="846" y="454" width="124" height="40"/><text class="bx" x="908" y="479">Adjacency List</text>
+      </svg>
+    </div>
+    <div class="card">
+      <h3>How to read it (the one thing everyone flips)</h3>
+      <div class="concept">The <b>arrow means "implements" and points TO the ADT.</b> So <code>HashMap ──▶ Map</code> reads "HashMap implements the Map ADT," and <code>Adjacency List ──▶ Graph</code> reads "an adjacency list implements the Graph ADT." Never the other way around.
+        <br><br>By family: <b>Linear</b> — List/Stack/Queue are ADTs; ArrayList &amp; LinkedList implement them (either one can implement any of the three). <b>Trees</b> — Priority Queue is an ADT implemented by a Binary Min Tree or Binary Heap; BST is a binary-tree subtype, and AVL &amp; Red-Black are self-balancing BSTs. <b>Maps</b> — Map ADT implemented by HashMap. <b>Graphs</b> — Graph ADT implemented by Adjacency Matrix or Adjacency List.</div>
+      <div class="q" data-mc="2">
+        <div class="prompt"><span class="tag">Multiple choice</span>The arrow <code>Binary Heap ──▶ Priority Queue</code> means:</div>
+        <button class="opt" data-i="0">A Priority Queue is a kind of Binary Heap.</button>
+        <button class="opt" data-i="1">A Binary Heap contains Priority Queues.</button>
+        <button class="opt" data-i="2">A Binary Heap implements the Priority Queue ADT.</button>
+        <div class="fb"><b>A Binary Heap implements the Priority Queue ADT.</b> The arrow points from the implementation (how) to the ADT (what). The heap is one concrete way to realize the priority-queue interface.</div>
+      </div>
+    </div>
+  </section>
+
   <!-- ===================== BASICS ===================== -->
-  <section class="topic active" id="l21-basics">
+  <section class="topic" id="l21-basics">
     <h2>Lesson 21 · Spanning Trees &amp; MSTs</h2>
     <div class="concept">For a connected <b>undirected</b> graph, a <b>Spanning Tree (ST)</b> is a tree that uses a subset of the edges so that <b>every vertex</b> is included — exactly <b>n − 1</b> edges, no cycles. A <b>Minimum Spanning Tree (MST)</b> is the spanning tree whose <b>total edge weight is as small as possible</b>. Use case: cheapest way to wire up n cities so they're all connected. (Slide 2.)</div>
     <div class="card">

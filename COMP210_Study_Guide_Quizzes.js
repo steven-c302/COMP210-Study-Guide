@@ -12,6 +12,9 @@ document.getElementById('lquiz').innerHTML = `
   <button onclick="showTopic(this,'qz-4')">Quiz 4</button>
   <button onclick="showTopic(this,'qz-exA')">★ Practice Exam A</button>
   <button onclick="showTopic(this,'qz-exB')">★ Practice Exam B</button>
+  <button onclick="showTopic(this,'qz-exC')">★★ Exam C (harder)</button>
+  <button onclick="showTopic(this,'qz-exD')">★★ Exam D (harder)</button>
+  <button onclick="showTopic(this,'qz-exE')">★★ Exam E (harder)</button>
 </nav>
 <main>
 
@@ -202,11 +205,11 @@ checkClock(int hour): int time=1600; println(time);</pre>
       <div class="card" style="background:none;border:none;padding:0"><h3>Q10 · Insert 10, 90, 5, 45, 1, 70 into an empty BST (3 pts)</h3>
         <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show answer</button></div>
         <div class="reveal"><pre>        10
-       /    \
+       /    \\
       5      90
      /      /
     1      45
-             \
+             \\
              70</pre></div></div>
       <div class="q"><p><span class="tag">Q11 · Fill</span>In-order traversal of that tree: <input type="text" class="fillblank" data-answer="1,5,10,45,70,90|1, 5, 10, 45, 70, 90" placeholder="?" style="width:230px"></p><button class="btn small" onclick="checkFill(this)">Check</button><div class="fb"><b>1, 5, 10, 45, 70, 90</b> — in-order of a BST is sorted ascending.</div></div>
       <div class="q"><p><span class="tag">Q12 · Fill</span>Post-order traversal: <input type="text" class="fillblank" data-answer="1,5,70,45,90,10|1, 5, 70, 45, 90, 10" placeholder="?" style="width:230px"></p><button class="btn small" onclick="checkFill(this)">Check</button><div class="fb"><b>1, 5, 70, 45, 90, 10</b> (left, right, root).</div></div>
@@ -215,27 +218,27 @@ checkClock(int hour): int time=1600; println(time);</pre>
       <div class="q"><p><span class="tag">Q15 · Fill</span>Index of its right child? <input type="text" class="fillblank sm" data-answer="2i+2|2*i+2|(i*2)+2|2i + 2" placeholder="?" style="width:120px"></p><button class="btn small" onclick="checkFill(this)">Check</button><div class="fb"><b>2i + 2</b> (left child is 2i + 1).</div></div>
       <div class="card" style="background:none;border:none;padding:0"><h3>Q16 · Draw the result of remove(10) on the BST (3 pts)</h3>
         <pre>Before:            10
-                 /    \
+                 /    \\
                 7      20
-               / \    /  \
+               / \\    /  \\
               4   9  16   24
-               \       \
+               \\       \\
                 5       18</pre>
         <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show answer</button></div>
         <div class="reveal"><pre>After (replace 10 with in-order successor 16;
        16's old right child 18 takes its place):
                    16
-                 /    \
+                 /    \\
                 7      20
-               / \    /  \
+               / \\    /  \\
               4   9  18   24
-               \
+               \\
                 5</pre><div class="concept">Removing a node with two children: replace its value with the <b>in-order successor</b> (smallest value in the right subtree = 16), then delete that successor from the right subtree.</div></div></div>
       <div class="card" style="background:none;border:none;padding:0"><h3>Q17 · Draw the result of dequeue() on the Binary Min Tree (3 pts)</h3>
         <pre>Before:          3
-               /   \
+               /   \\
               13     9
-             /  \     \
+             /  \\     \\
             14   26    20
             /
            35</pre>
@@ -243,9 +246,9 @@ checkClock(int hour): int time=1600; println(time);</pre>
         <div class="reveal"><pre>After (remove min root 3; move last node 35 up,
        then sift down swapping with smaller child):
                  9
-               /   \
+               /   \\
               13     20
-             /  \    /
+             /  \\    /
             14   26 35</pre><div class="concept">dequeue removes the min (root 3). The last node (35) moves to the root and sifts down: 35↔9 (9 up), then 35↔20 (20 up), leaving 35 as a leaf under 20.</div></div></div>
     </div>
   </section>
@@ -269,11 +272,11 @@ checkClock(int hour): int time=1600; println(time);</pre>
         <div class="reveal"><pre>Insert 40 → left of 48. Node 14 becomes -2 (right-heavy,
 RR case) → rotate left at 14. Result:
               33
-            /    \
+            /    \\
           14      67
-         /  \    /  \
+         /  \\    /  \\
         8   18  48   70
-       /     \  /
+       /     \\  /
       3      22 40</pre><div class="concept">(Confirmed by the graded rubric.) Only one rotation — a single left rotation at the root 14 — restores balance; 33 becomes the new root.</div></div></div>
       <div class="concept">Q4–6 use a red-black tree: root 16(B); 10, 30; 5, 14, 22, 90; 90→57, 98; 57→42, 60.</div>
       <div class="q"><p><span class="tag">Q4 · Fill</span>What is the black height of the tree? <input type="text" class="fillblank sm" data-answer="2|3" placeholder="?" style="width:70px"></p><button class="btn small" onclick="checkFill(this)">Check</button><div class="fb"><b>2</b> (accepted: 2 or 3 depending on whether you count the root/NIL). Black height = number of black nodes on a root-to-NIL path, not counting the start.</div></div>
@@ -308,13 +311,36 @@ index: 0(-) 1:1  2:15  3(-)  4:8  5:5  6:12</pre><div class="concept">Each colli
       <div class="q" data-mc="0"><div class="prompt"><span class="tag">Q13 · MC</span>In a chaining hash table, a table with load factor greater than 1 is…</div>
         <button class="opt" data-i="0">Possible, because each slot can store a chain of multiple keys</button><button class="opt" data-i="1">Only possible if there are no collisions</button><button class="opt" data-i="2">Impossible</button>
         <div class="fb"><b>Possible</b> — chaining lets each slot hold a linked list, so N can exceed M. (Probing, by contrast, caps load at ≤ 1.)</div></div>
-      <div class="card" style="background:none;border:none;padding:0"><h3>Q14 · Complexity table — amortized (left) / worst case (right) (9 pts)</h3>
-        <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show answer</button></div>
-        <div class="reveal"><table class="cmp"><tr><th></th><th>Heaps (resizing)<br>amort / worst</th><th>Balanced BSTs<br>amort / worst</th><th>Hash Tables (resizing)<br>amort / worst</th></tr>
-          <tr><td>Insert</td><td>O(log n) / O(n)</td><td>O(log n) / O(log n)</td><td>O(1) / O(n)</td></tr>
-          <tr><td>Search</td><td>O(n) / O(n)</td><td>O(log n) / O(log n)</td><td>O(1) / O(n)</td></tr>
-          <tr><td>Delete (min)</td><td>O(log n) / O(n)</td><td>O(log n) / O(log n)</td><td>O(1) / O(n)</td></tr></table>
-          <div class="concept">Key ideas: resizing structures (heap, hash table) hit an O(n) <b>worst case</b> when a resize copies everything, but amortize it away. Heaps have <b>O(n) search</b> (no ordering for arbitrary lookup). Balanced BSTs are O(log n) across the board with no resizing needed. Hash tables are O(1) amortized, O(n) worst.</div></div></div>
+      <div class="card" style="background:none;border:none;padding:0"><h3>Q14 · Complexity table — fill in amortized (left) / worst case (right) (9 pts)</h3>
+        <p class="muted">Type each Big-O from memory (e.g. <code>O(1)</code>, <code>O(log n)</code>, <code>O(n)</code>). Spelling of spaces doesn't matter.</p>
+        <table class="cmp">
+          <tr><th></th><th>Heaps (resizing)<br>amort / worst</th><th>Balanced BSTs<br>amort / worst</th><th>Hash Tables (resizing)<br>amort / worst</th></tr>
+          <tr><td>Insert</td>
+            <td><input type="text" class="q14-blank" data-answer="O(log n)|logn|log n" placeholder="?"> / <input type="text" class="q14-blank" data-answer="O(n)|n" placeholder="?"></td>
+            <td><input type="text" class="q14-blank" data-answer="O(log n)|logn|log n" placeholder="?"> / <input type="text" class="q14-blank" data-answer="O(log n)|logn|log n" placeholder="?"></td>
+            <td><input type="text" class="q14-blank" data-answer="O(1)|1|constant" placeholder="?"> / <input type="text" class="q14-blank" data-answer="O(n)|n" placeholder="?"></td></tr>
+          <tr><td>Search</td>
+            <td><input type="text" class="q14-blank" data-answer="O(n)|n" placeholder="?"> / <input type="text" class="q14-blank" data-answer="O(n)|n" placeholder="?"></td>
+            <td><input type="text" class="q14-blank" data-answer="O(log n)|logn|log n" placeholder="?"> / <input type="text" class="q14-blank" data-answer="O(log n)|logn|log n" placeholder="?"></td>
+            <td><input type="text" class="q14-blank" data-answer="O(1)|1|constant" placeholder="?"> / <input type="text" class="q14-blank" data-answer="O(n)|n" placeholder="?"></td></tr>
+          <tr><td>Delete (min)</td>
+            <td><input type="text" class="q14-blank" data-answer="O(log n)|logn|log n" placeholder="?"> / <input type="text" class="q14-blank" data-answer="O(n)|n" placeholder="?"></td>
+            <td><input type="text" class="q14-blank" data-answer="O(log n)|logn|log n" placeholder="?"> / <input type="text" class="q14-blank" data-answer="O(log n)|logn|log n" placeholder="?"></td>
+            <td><input type="text" class="q14-blank" data-answer="O(1)|1|constant" placeholder="?"> / <input type="text" class="q14-blank" data-answer="O(n)|n" placeholder="?"></td></tr>
+        </table>
+        <div class="toolbar" style="margin-top:8px">
+          <button class="btn small" onclick="q14Check()">Check all</button>
+          <button class="btn ghost small" onclick="q14Reveal()">Reveal answers</button>
+          <button class="btn ghost small" onclick="q14Clear()">Clear</button>
+        </div>
+        <div class="fb" id="fb-q14"></div>
+        <div class="toolbar" style="margin-top:6px"><button class="btn ghost small" onclick="toggleReveal(this)">Explain the reasoning</button></div>
+        <div class="reveal"><div class="concept">
+          <b>Heaps (resizing).</b> <u>Insert</u> = add at the end + sift up along the height → <b>O(log n)</b>; the <b>worst case O(n)</b> happens only when the backing array is full and must be resized (copy all n elements) — but that resize is rare, so it <b>amortizes back to O(log n)</b>. <u>Search</u> (for an arbitrary value) is <b>O(n)</b> either way — a heap only orders parent-vs-child, not left-vs-right, so there's no way to prune; you may scan every node. <u>Delete-min</u> = remove the root, move the last element up, sift down → <b>O(log n)</b>, with the same O(n) resize worst case.
+          <br><br><b>Balanced BSTs (AVL / Red-Black).</b> Every operation follows a single root-to-leaf path, and the balancing keeps the height at O(log n). There's <b>no array to resize</b>, so amortized and worst case are <b>both O(log n)</b> for insert, search, and delete.
+          <br><br><b>Hash tables (resizing).</b> With a good hash function and a bounded load factor, each bucket holds ~a constant number of items, so insert/search/delete are <b>O(1) amortized</b>. The <b>worst case is O(n)</b> — either every key collides into one bucket/cluster, or an insert triggers a resize that rehashes all n elements. Because resizing only happens occasionally (doubling), it amortizes away to O(1).
+          <br><br><b>The pattern:</b> the two <i>resizing</i> structures (heap, hash table) show a gap between amortized and worst case because of the rare O(n) resize; the balanced BST needs no resizing, so its two columns match.
+        </div></div></div>
     </div>
   </section>
 
@@ -347,9 +373,9 @@ index: 0(-) 1:1  2:15  3(-)  4:8  5:5  6:12</pre><div class="concept">Each colli
       <div class="card" style="background:none;border:none;padding:0"><h3>A8 · Insert 50, 30, 70, 20, 40, 60 into an empty BST; give the in-order and level-order traversals</h3>
         <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show answer</button></div>
         <div class="reveal"><pre>        50
-       /    \
+       /    \\
       30     70
-     /  \    /
+     /  \\    /
     20   40 60
 
 in-order:    20, 30, 40, 50, 60, 70
@@ -363,7 +389,7 @@ level-order: 50, 30, 70, 20, 40, 60</pre></div></div>
         <div class="reveal"><pre>Inserting 30 makes 10 right-heavy (BF -2), 20 right-heavy →
 RR case → single LEFT rotation at 10:
         20
-       /  \
+       /  \\
       10   30</pre></div></div>
       <div class="q"><p><span class="tag">A12 · Fill</span>The maximum height of a red-black tree with n nodes is <input type="text" class="fillblank sm" data-answer="2log2(n+1)|2log(n+1)|2*log2(n+1)|2log₂(n+1)" placeholder="?" style="width:150px">.</p><button class="btn small" onclick="checkFill(this)">Check</button><div class="fb"><b>2·log₂(n + 1)</b> — the longest path is at most twice the shortest.</div></div>
       <div class="q" data-mc="2"><div class="prompt"><span class="tag">A13 · MC</span>M = 8, quadratic probing h(k,i) = (k + i²) mod 8. Insert 4, 12, 20. Where does 20 land?</div>
@@ -424,9 +450,9 @@ RR case → single LEFT rotation at 10:
       <div class="card" style="background:none;border:none;padding:0"><h3>B7 · Insert 8, 3, 10, 1, 6, 14, 4 into a BST. Give the post-order traversal.</h3>
         <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show answer</button></div>
         <div class="reveal"><pre>        8
-       / \
+       / \\
       3    10
-     / \     \
+     / \\     \\
     1   6     14
        /
       4
@@ -440,7 +466,7 @@ post-order (left, right, root): 1, 4, 6, 3, 14, 10, 8</pre></div></div>
         <div class="reveal"><pre>Inserting 10 makes 30 left-heavy (LL case) →
 single RIGHT rotation at 30:
         20
-       /  \
+       /  \\
       10   30</pre></div></div>
       <div class="q" data-mc="0"><div class="prompt"><span class="tag">B10 · MC</span>Which rotation fixes an AVL "left-right" (LR) imbalance?</div>
         <button class="opt" data-i="0">Rotate the child left, then rotate the node right</button>
@@ -473,4 +499,257 @@ d(D)=4  (A→B→C→D = 3+1, better than A→B→D = 6)</pre></div></div>
         <div class="fb"><b>Priority Queue → Binary Heap</b> (ADT → implementation). The others are written backwards: it's HashMap implements Map, and Adjacency List implements Graph.</div></div>
     </div>
   </section>
+
+  <!-- ===================== EXAM C ===================== -->
+  <section class="topic" id="qz-exC">
+    <h2>★★ Practice Exam C — Harder (memory, complexity, trees)</h2>
+    <div class="concept">Tougher, multi-step questions. Work them fully on paper before revealing.</div>
+    <div class="card">
+      <div class="q"><p><span class="tag">C1 · Fill</span>Convert <code>0b11011010</code> to hex: <code>0x</code><input type="text" class="fillblank sm" data-answer="da" placeholder="?" style="width:70px"></p><button class="btn small" onclick="checkFill(this)">Check</button><div class="fb"><b>0xDA.</b> 1101→D, 1010→A. (= 218.)</div></div>
+      <div class="q" data-mc="0"><div class="prompt"><span class="tag">C2 · MC</span>Which line compiles <b>without</b> a cast? <code>int i; double d;</code></div>
+        <button class="opt" data-i="0"><code>d = i;</code> (int → double)</button>
+        <button class="opt" data-i="1"><code>i = d;</code> (double → int)</button>
+        <button class="opt" data-i="2">Both</button>
+        <div class="fb"><b><code>d = i;</code></b> — widening (int→double) is implicit. Narrowing (double→int) loses precision and requires an explicit cast <code>(int)</code>.</div></div>
+      <div class="card" style="background:none;border:none;padding:0"><h3>C3 · What is printed?</h3>
+        <pre>int[] a = {1, 2, 3};
+int[] b = a;
+b[0] = 9;
+int[] c = {1, 2, 3};
+System.out.println(a[0]);
+System.out.println(c[0]);
+System.out.println(a == b);
+System.out.println(a == c);</pre>
+        <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show answer</button></div>
+        <div class="reveal"><pre>9
+1
+true
+false</pre><div class="concept"><code>b = a</code> aliases the same array, so <code>b[0]=9</code> changes <code>a[0]</code>. <code>c</code> is a separate object with equal contents. <code>==</code> compares references: a and b are the same object (true); a and c are different objects (false).</div></div></div>
+      <div class="q" data-mc="1"><div class="prompt"><span class="tag">C4 · MC</span>A recurrence <code>T(n) = 2·T(n/2) + O(n)</code> solves to…</div>
+        <button class="opt" data-i="0">O(n)</button><button class="opt" data-i="1">O(n log n)</button><button class="opt" data-i="2">O(n²)</button>
+        <div class="fb"><b>O(n log n).</b> log n levels of recursion, each doing O(n) total work (like merge/quick sort's best case).</div></div>
+      <div class="q"><p><span class="tag">C5 · Fill</span>Using naive recursion <code>fib(n)=fib(n-1)+fib(n-2)</code> (base fib(0)=fib(1)=1), how many total calls to <code>fib</code> are made to compute <code>fib(4)</code>? <input type="text" class="fillblank sm" data-answer="9" placeholder="?" style="width:60px"></p><button class="btn small" onclick="checkFill(this)">Check</button><div class="fb"><b>9.</b> Count nodes in the call tree: C(n)=1+C(n-1)+C(n-2); C(2)=3, C(3)=5, C(4)=9. This exponential blowup is why memoization matters.</div></div>
+      <div class="card" style="background:none;border:none;padding:0"><h3>C6 · Big-O of this loop (careful!)</h3>
+        <pre>for (int i = 1; i &lt; n; i *= 2)     // i = 1,2,4,...
+    for (int j = 0; j &lt; i; j++)
+        work();</pre>
+        <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show answer</button></div>
+        <div class="reveal"><div class="concept"><b>O(n).</b> The inner loop runs i times, and i doubles: 1 + 2 + 4 + … + n/2 ≈ n. The geometric sum is O(n), <b>not</b> O(n log n) — a common trap.</div></div></div>
+      <div class="card" style="background:none;border:none;padding:0"><h3>C7 · AVL: insert 30, 10, 20 into an empty AVL tree. Name the case and give the result.</h3>
+        <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show answer</button></div>
+        <div class="reveal"><pre>30 left-heavy, its left child 10 is right-heavy → LR case →
+rotate LEFT at 10, then RIGHT at 30:
+        20
+       /  \\
+      10   30</pre></div></div>
+      <div class="card" style="background:none;border:none;padding:0"><h3>C8 · BST: remove(50) from this tree (two children)</h3>
+        <pre>          50
+        /     \\
+       30      70
+      /  \\     /  \\
+     20  40   60   80</pre>
+        <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show answer</button></div>
+        <div class="reveal"><pre>Replace 50 with its in-order successor (60), then remove 60:
+          60
+        /     \\
+       30      70
+      /  \\        \\
+     20  40        80</pre><div class="concept">In-order successor = smallest value in the right subtree = 60 (70's left child). Copy it up, delete the old 60.</div></div></div>
+      <div class="card" style="background:none;border:none;padding:0"><h3>C9 · buildHeap (min-heap) on [5, 3, 8, 1, 9, 2] — give the final array</h3>
+        <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show answer</button></div>
+        <div class="reveal"><pre>Final: [1, 3, 2, 5, 9, 8]
+
+Work (last parent index 2, go down to 0):
+i=2 (8): swap with child 2      → [5,3,2,1,9,8]
+i=1 (3): swap with child 1      → [5,1,2,3,9,8]
+i=0 (5): swap with 1, then w/3  → [1,3,2,5,9,8]</pre></div></div>
+      <div class="q" data-mc="1"><div class="prompt"><span class="tag">C10 · MC</span>Inserting a node into a red-black tree whose <b>uncle is red</b> triggers…</div>
+        <button class="opt" data-i="0">A rotation only</button>
+        <button class="opt" data-i="1">A recolor (push blackness down from grandparent), then continue checking upward</button>
+        <button class="opt" data-i="2">Nothing — red uncles are always fine</button>
+        <div class="fb"><b>Recolor</b> — flip parent &amp; uncle to black and grandparent to red, then re-check at the grandparent. Rotations are for the <i>black-uncle</i> cases.</div></div>
+      <div class="q"><p><span class="tag">C11 · Fill</span>In a red-black tree, both children of every <b>red</b> node must be <input type="text" class="fillblank sm" data-answer="black" placeholder="?" style="width:90px">.</p><button class="btn small" onclick="checkFill(this)">Check</button><div class="fb"><b>black</b> — the "no two reds in a row" invariant.</div></div>
+      <div class="card" style="background:none;border:none;padding:0"><h3>C12 · Reconstruct the tree — preorder [8,3,1,6,10,14], inorder [1,3,6,8,10,14]</h3>
+        <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show answer</button></div>
+        <div class="reveal"><pre>Root = first preorder = 8. In inorder, left of 8 = {1,3,6}, right = {10,14}.
+        8
+       / \\
+      3    10
+       \\     \\
+        6     14
+     (3's left child is 1)
+        8
+       / \\
+      3    10
+     / \\    \\
+    1   6    14</pre><div class="concept">Preorder gives the root first; inorder splits into left/right subtrees. Recurse on each side.</div></div></div>
+      <div class="q" data-tf="T"><div class="prompt"><span class="tag">C13 · T/F</span>Quadratic probing can fail to insert a key even when the table is not full.</div>
+        <button class="opt" data-v="T">True</button><button class="opt" data-v="F">False</button>
+        <div class="fb"><b>True.</b> The probe sequence <code>i²</code> visits only a limited set of slots, so it can cycle among occupied cells and never reach the empty ones (secondary clustering).</div></div>
+      <div class="q" data-mc="2"><div class="prompt"><span class="tag">C14 · MC</span>Appending n items to an ArrayList is O(n) total (amortized O(1) each) because…</div>
+        <button class="opt" data-i="0">Each append copies the whole array.</button>
+        <button class="opt" data-i="1">The array never resizes.</button>
+        <button class="opt" data-i="2">Doubling means the total copying across all resizes is n + n/2 + n/4 + … &lt; 2n.</button>
+        <div class="fb"><b>Doubling</b> — the geometric series of copy costs sums to less than 2n, so the per-append average is O(1).</div></div>
+    </div>
+  </section>
+
+  <!-- ===================== EXAM D ===================== -->
+  <section class="topic" id="qz-exD">
+    <h2>★★ Practice Exam D — Harder (hashing, heaps, graphs)</h2>
+    <div class="card">
+      <div class="card" style="background:none;border:none;padding:0"><h3>D1 · Linear probing, M=7, h(k)=k mod 7. Insert 10, 17, 24, then delete 17, then search for 24. Explain.</h3>
+        <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show answer</button></div>
+        <div class="reveal"><pre>10→3, 17→3 taken→4, 24→3 taken,4 taken→5.
+Delete 17 at index 4: mark a TOMBSTONE (not empty!).
+Search 24: probe 3(10),4(tombstone→skip),5(24) → found.</pre><div class="concept">If you blanked index 4 instead of using a tombstone, the search would stop early at the gap and wrongly report 24 as missing.</div></div></div>
+      <div class="q" data-mc="3"><div class="prompt"><span class="tag">D2 · MC</span>M=8, quadratic h(k,i)=(k+i²) mod 8. Insert 3, 11, 19, 27. Where does 27 go?</div>
+        <button class="opt" data-i="0">index 3</button><button class="opt" data-i="1">index 4</button><button class="opt" data-i="2">index 7</button><button class="opt" data-i="3">Cannot be inserted</button>
+        <div class="fb"><b>Cannot be inserted.</b> 3→3, 11→4, 19→7. Now 27: since 27 mod 8 = 3, its probes are (3 + i²) mod 8, and i² mod 8 only cycles through {0,1,4,1,…}, giving indices {3, 4, 7} — all occupied. It never reaches the empty slots. This is the secondary-clustering failure of quadratic probing.</div></div>
+      <div class="q"><p><span class="tag">D3 · Fill</span>Chaining table, insert-at-head, h(k)=k mod 5, insert 6, 11, 16. After all inserts, the chain at index 1 (head → tail) is: <input type="text" class="fillblank" data-answer="16,11,6|16 11 6|16->11->6|16 → 11 → 6" placeholder="?" style="width:180px"></p><button class="btn small" onclick="checkFill(this)">Check</button><div class="fb"><b>16 → 11 → 6.</b> All hash to 1; head-insertion puts the newest (16) first.</div></div>
+      <div class="q" data-mc="1"><div class="prompt"><span class="tag">D4 · MC</span>A probing table has M=20 and just reached N=15. With threshold Tp=0.75, what happens on the next insert?</div>
+        <button class="opt" data-i="0">Nothing — load is fine</button>
+        <button class="opt" data-i="1">Resize: load hit 15/20 = 0.75, so grow (e.g. double) and rehash all</button>
+        <button class="opt" data-i="2">Reject the insert</button>
+        <div class="fb"><b>Resize.</b> 15/20 = 0.75 meets the probing threshold, so the table doubles and every key is rehashed against the new M.</div></div>
+      <div class="card" style="background:none;border:none;padding:0"><h3>D5 · removeMin twice on this min-heap array [1, 4, 2, 7, 5, 3]. Give the array after each.</h3>
+        <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show answer</button></div>
+        <div class="reveal"><pre>Start: [1,4,2,7,5,3]
+removeMin (1): move last 3 to root, sift down:
+  [3,4,2,7,5] → 3&gt;2 swap → [2,4,3,7,5]
+removeMin (2): move last 5 to root, sift down:
+  [5,4,3,7] → 5&gt;3 swap → [3,4,5,7]</pre><div class="concept">Each removeMin: take root, move last element up, sift down toward the smaller child. Both are O(log n).</div></div></div>
+      <div class="q" data-mc="1"><div class="prompt"><span class="tag">D6 · MC</span>Building a heap from n items: buildHeap vs n separate inserts?</div>
+        <button class="opt" data-i="0">Both O(n log n)</button>
+        <button class="opt" data-i="1">buildHeap O(n); n inserts O(n log n)</button>
+        <button class="opt" data-i="2">buildHeap O(n log n); n inserts O(n)</button>
+        <div class="fb"><b>buildHeap is O(n)</b> (bottom-up); doing n independent inserts is <b>O(n log n)</b>.</div></div>
+      <div class="q"><p><span class="tag">D7 · Fill</span>How many distinct topological orderings does this DAG have? Edges: A→B, A→C, B→D, C→D, D→E. <input type="text" class="fillblank sm" data-answer="2" placeholder="?" style="width:60px"></p><button class="btn small" onclick="checkFill(this)">Check</button><div class="fb"><b>2.</b> A first; then B and C in either order (both depend only on A); then D (needs both); then E. 2 orderings: A,B,C,D,E and A,C,B,D,E.</div></div>
+      <div class="card" style="background:none;border:none;padding:0"><h3>D8 · Dijkstra from A. Directed edges: A→B(2), A→C(5), B→C(1), B→D(7), C→D(3). Give final d(v).</h3>
+        <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show answer</button></div>
+        <div class="reveal"><pre>d(A)=0
+d(B)=2   (A→B)
+d(C)=3   (A→B→C = 2+1, beats A→C = 5)
+d(D)=6   (A→B→C→D = 3+3, beats A→B→D = 9)</pre></div></div>
+      <div class="q" data-mc="1"><div class="prompt"><span class="tag">D9 · MC</span>Why does Dijkstra's algorithm fail on graphs with negative edges?</div>
+        <button class="opt" data-i="0">It runs forever.</button>
+        <button class="opt" data-i="1">It finalizes a vertex greedily, but a later negative edge could still lower that "finalized" distance.</button>
+        <button class="opt" data-i="2">Negative edges make the graph undirected.</button>
+        <div class="fb"><b>The greedy assumption breaks</b> — once Dijkstra marks a vertex visited it never revisits it, but a negative edge could have offered a cheaper path.</div></div>
+      <div class="q" data-tf="F"><div class="prompt"><span class="tag">D10 · T/F</span>Bellman-Ford returns FALSE whenever the graph contains a negative-weight edge.</div>
+        <button class="opt" data-v="T">True</button><button class="opt" data-v="F">False</button>
+        <div class="fb"><b>False.</b> It returns FALSE only for a negative-weight <i>cycle</i>. A lone negative edge is fine.</div></div>
+      <div class="card" style="background:none;border:none;padding:0"><h3>D11 · Kruskal's MST total cost. Undirected edges: (A,B,1), (B,C,2), (A,C,2), (C,D,3), (B,D,4)</h3>
+        <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show answer</button></div>
+        <div class="reveal"><pre>Sort: AB(1), AC(2), BC(2), CD(3), BD(4)
+AB(1) add → {A,B}
+AC(2) add → {A,B,C}
+BC(2) REJECT (B,C already connected → cycle)
+CD(3) add → {A,B,C,D}   (all 4 vertices, 3 edges)
+Total MST cost = 1 + 2 + 3 = 6</pre></div></div>
+      <div class="q" data-mc="0"><div class="prompt"><span class="tag">D12 · MC</span>Match algorithm to time complexity: BFS, Dijkstra's, Bellman-Ford.</div>
+        <button class="opt" data-i="0">O(n+m), O((n+m)log n), O(nm)</button>
+        <button class="opt" data-i="1">O(nm), O(n+m), O((n+m)log n)</button>
+        <button class="opt" data-i="2">All O(n+m)</button>
+        <div class="fb"><b>BFS O(n+m), Dijkstra O((n+m)log n), Bellman-Ford O(nm).</b> More generality costs more time.</div></div>
+    </div>
+  </section>
+
+  <!-- ===================== EXAM E ===================== -->
+  <section class="topic" id="qz-exE">
+    <h2>★★ Practice Exam E — Harder (comprehensive)</h2>
+    <div class="card">
+      <div class="q" data-mc="1"><div class="prompt"><span class="tag">E1 · MC</span>Which statement is correct?</div>
+        <button class="opt" data-i="0">A Binary Heap is an ADT implemented by a Priority Queue.</button>
+        <button class="opt" data-i="1">A Priority Queue is an ADT implemented by a Binary Heap or Binary Min Tree.</button>
+        <button class="opt" data-i="2">A HashMap is an ADT implemented by a Map.</button>
+        <div class="fb"><b>Priority Queue (ADT) ← Binary Heap / Binary Min Tree (implementations).</b> The others are backwards.</div></div>
+      <div class="card" style="background:none;border:none;padding:0"><h3>E2 · Big-O of this nested loop</h3>
+        <pre>for (int i = 0; i &lt; n; i++)
+    for (int j = 1; j &lt; n; j *= 2)
+        work();</pre>
+        <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show answer</button></div>
+        <div class="reveal"><div class="concept"><b>O(n log n).</b> Outer loop n times; inner loop multiplies j so it runs log₂n times. n · log n.</div></div></div>
+      <div class="q" data-mc="1"><div class="prompt"><span class="tag">E3 · MC</span>Why declare a variable with an interface type, e.g. <code>List&lt;Integer&gt; x = new ArrayList&lt;&gt;();</code>?</div>
+        <button class="opt" data-i="0">It runs faster.</button>
+        <button class="opt" data-i="1">It programs to the ADT, so you can swap the implementation without changing the rest of the code.</button>
+        <button class="opt" data-i="2">ArrayList has no methods otherwise.</button>
+        <div class="fb"><b>Program to the interface (ADT).</b> Code depending on <code>List</code> works with any List implementation.</div></div>
+      <div class="q" data-mc="2"><div class="prompt"><span class="tag">E4 · MC</span>The in-order traversal of a BST gives values in…</div>
+        <button class="opt" data-i="0">Insertion order</button><button class="opt" data-i="1">Reverse order</button><button class="opt" data-i="2">Sorted (ascending) order</button>
+        <div class="fb"><b>Sorted ascending.</b> That's a defining property of a BST's in-order traversal.</div></div>
+      <div class="card" style="background:none;border:none;padding:0"><h3>E5 · AVL: insert 50, 60, 55 into an empty AVL tree. Case &amp; result?</h3>
+        <div class="toolbar"><button class="btn ghost small" onclick="toggleReveal(this)">Show answer</button></div>
+        <div class="reveal"><pre>50 right-heavy; its right child 60 is left-heavy → RL case →
+rotate RIGHT at 60, then LEFT at 50:
+        55
+       /  \\
+      50   60</pre></div></div>
+      <div class="q"><p><span class="tag">E6 · Fill</span>A red-black tree with n nodes has height at most <input type="text" class="fillblank sm" data-answer="2log2(n+1)|2log(n+1)|2*log2(n+1)|2log₂(n+1)" placeholder="?" style="width:150px">, so all operations are O(<input type="text" class="fillblank sm" data-answer="log n|logn" placeholder="?" style="width:80px">).</p><button class="btn small" onclick="checkFillGroup(this)">Check both</button><div class="fb"><b>2·log₂(n+1)</b>, giving <b>O(log n)</b>.</div></div>
+      <div class="card" style="background:none;border:none;padding:0"><h3>E7 · Match the clustering type</h3>
+        <table class="match" id="exE-clust">
+          <tr><td class="match-term">Primary clustering</td><td><select class="match-def"><option value="">—</option><option value="lin">Linear probing — runs of filled slots merge into big blocks</option><option value="quad">Quadratic probing — keys with the same home slot share one probe path</option></select></td></tr>
+          <tr><td class="match-term">Secondary clustering</td><td><select class="match-def"><option value="">—</option><option value="lin">Linear probing — runs of filled slots merge into big blocks</option><option value="quad">Quadratic probing — keys with the same home slot share one probe path</option></select></td></tr>
+        </table>
+        <button class="btn small" style="margin-top:8px" onclick="checkMatch('exE-clust','fb-exE-clust',['lin','quad'])">Check</button>
+        <div class="fb" id="fb-exE-clust">Primary = linear probing's merging blocks; secondary = quadratic probing's shared probe paths. Double hashing avoids both.</div></div>
+      <div class="q" data-mc="2"><div class="prompt"><span class="tag">E8 · MC</span>You need shortest paths in an unweighted, undirected social graph. Best algorithm?</div>
+        <button class="opt" data-i="0">Dijkstra's</button><button class="opt" data-i="1">Bellman-Ford</button><button class="opt" data-i="2">BFS</button>
+        <div class="fb"><b>BFS</b> — O(n+m), optimal for unweighted shortest paths (fewest hops).</div></div>
+      <div class="q"><p><span class="tag">E9 · Fill</span>The space complexity of recursion is driven by the maximum depth of the <input type="text" class="fillblank sm" data-answer="call stack|stack|callstack" placeholder="?" style="width:120px">.</p><button class="btn small" onclick="checkFill(this)">Check</button><div class="fb"><b>call stack</b> — each pending recursive call keeps a frame; depth d → O(d) space.</div></div>
+      <div class="q" data-mc="1"><div class="prompt"><span class="tag">E10 · MC</span>A complete binary tree with n nodes stored in an array — the node at index i has children at…</div>
+        <button class="opt" data-i="0">i-1 and i+1</button><button class="opt" data-i="1">2i+1 and 2i+2</button><button class="opt" data-i="2">i/2 and i/2+1</button>
+        <div class="fb"><b>2i+1 (left) and 2i+2 (right)</b>; parent is ⌊(i−1)/2⌋. This index arithmetic is why heaps need no pointers.</div></div>
+      <div class="q" data-mc="0"><div class="prompt"><span class="tag">E11 · MC</span>You need a structure with O(1) average lookup by key, and order does NOT matter. Best choice?</div>
+        <button class="opt" data-i="0">HashMap</button><button class="opt" data-i="1">Balanced BST</button><button class="opt" data-i="2">Binary Heap</button>
+        <div class="fb"><b>HashMap</b> — O(1) average key lookup. Use a balanced BST instead only if you need sorted order / range queries.</div></div>
+      <div class="q" data-tf="T"><div class="prompt"><span class="tag">E12 · T/F</span>Kruskal's and Prim's can produce different MSTs for the same graph, but the total weight is the same.</div>
+        <button class="opt" data-v="T">True</button><button class="opt" data-v="F">False</button>
+        <div class="fb"><b>True.</b> When edge weights tie, different valid MSTs exist; all achieve the same minimum total cost.</div></div>
+      <div class="q" data-mc="1"><div class="prompt"><span class="tag">E13 · MC</span>Heap sort's space complexity is O(1) because…</div>
+        <button class="opt" data-i="0">It uses a second array.</button>
+        <button class="opt" data-i="1">It sorts in place — the heap lives in the same array being sorted.</button>
+        <button class="opt" data-i="2">It's recursive.</button>
+        <div class="fb"><b>In place</b> — buildHeap and the repeated swap-root-to-end happen within the input array, needing no extra proportional storage.</div></div>
+    </div>
+  </section>
 </main>`;
+
+/* ============================================================
+   Q14 complexity-table fill-in helpers
+   ============================================================ */
+(function(){
+  const s=document.createElement('style');
+  s.textContent='#qz-4 .q14-blank{width:82px;padding:5px 7px;border:1px solid var(--line);border-radius:6px;background:#0b1119;color:var(--text);font-family:monospace;font-size:13px;font-weight:700}'
+    +'#qz-4 .q14-blank::placeholder{color:var(--muted);font-weight:400}';
+  document.head.appendChild(s);
+})();
+function q14Norm(x){ return x.trim().toLowerCase().replace(/\s+/g,''); }
+function q14Check(){
+  let all=true, filled=0;
+  document.querySelectorAll('#qz-4 .q14-blank').forEach(inp=>{
+    const alts=inp.dataset.answer.toLowerCase().split('|').map(q14Norm);
+    const val=q14Norm(inp.value);
+    if(val) filled++;
+    const ok=alts.indexOf(val)!==-1;
+    inp.style.borderColor=ok?'var(--green)':'var(--red)';
+    inp.style.background=ok?'rgba(21,153,87,.16)':'rgba(192,57,43,.12)';
+    if(!ok) all=false;
+  });
+  const fb=document.getElementById('fb-q14');
+  fb.className='fb show '+(all?'ok':'no');
+  fb.innerHTML=all ? '✓ All 18 correct — you know the comparison cold!'
+    : (filled===0 ? '✗ Fill the cells first (e.g. O(1), O(log n), O(n)), then check.'
+                  : '✗ Red cells are off. Reveal the answers, or open "Explain the reasoning" below.');
+}
+function q14Reveal(){
+  document.querySelectorAll('#qz-4 .q14-blank').forEach(inp=>{
+    inp.value=inp.dataset.answer.split('|')[0];
+    inp.style.borderColor='var(--accent)'; inp.style.background='rgba(46,134,222,.14)';
+  });
+  const fb=document.getElementById('fb-q14'); fb.className='fb show'; fb.innerHTML='Answers filled in. Clear and try again from memory!';
+}
+function q14Clear(){
+  document.querySelectorAll('#qz-4 .q14-blank').forEach(inp=>{ inp.value=''; inp.style.borderColor='var(--line)'; inp.style.background='#0b1119'; });
+  const fb=document.getElementById('fb-q14'); fb.className='fb'; fb.innerHTML='';
+}

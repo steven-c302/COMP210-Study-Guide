@@ -100,6 +100,58 @@ document.getElementById('l21').innerHTML = `
         <div class="fb"><b>A Binary Heap implements the Priority Queue ADT.</b> The arrow points from the implementation (how) to the ADT (what). The heap is one concrete way to realize the priority-queue interface.</div>
       </div>
     </div>
+    <div class="card">
+      <h3>Recall practice — fill in the whole taxonomy</h3>
+      <p class="muted">Type each structure from memory. Placeholder shows its role (ADT vs implementation). Then check yourself.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:14px">
+        <div style="flex:1;min-width:230px;background:rgba(232,121,198,.07);border:1px solid rgba(232,121,198,.4);border-radius:10px;padding:12px">
+          <div style="font-weight:700;color:#e879c6;margin-bottom:8px;text-decoration:underline">Linear</div>
+          <div class="muted" style="font-size:12px">ADTs:</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px">
+            <input type="text" class="ds-blank" data-answer="list|lists" placeholder="ADT">
+            <input type="text" class="ds-blank" data-answer="stack|stacks" placeholder="ADT">
+            <input type="text" class="ds-blank" data-answer="queue|queues" placeholder="ADT"></div>
+          <div class="muted" style="font-size:12px">Implementations:</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">
+            <input type="text" class="ds-blank" data-answer="arraylist|arraylists|array list" placeholder="impl">
+            <input type="text" class="ds-blank" data-answer="linkedlist|linkedlists|linked list" placeholder="impl"></div>
+        </div>
+        <div style="flex:1.2;min-width:250px;background:rgba(167,139,250,.07);border:1px solid rgba(167,139,250,.4);border-radius:10px;padding:12px">
+          <div style="font-weight:700;color:#a78bfa;margin-bottom:8px;text-decoration:underline">Trees</div>
+          <div class="muted" style="font-size:12px">Binary Trees — PQ ADT + its 2 implementations:</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px">
+            <input type="text" class="ds-blank" data-answer="priority queue|priorityqueue|pq" placeholder="ADT">
+            <input type="text" class="ds-blank" data-answer="binary min tree|bmt|binary min tree|bmts" placeholder="impl">
+            <input type="text" class="ds-blank" data-answer="binary heap|heap|heaps" placeholder="impl"></div>
+          <div class="muted" style="font-size:12px">BSTs — the subtype + its 2 balanced forms:</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">
+            <input type="text" class="ds-blank" data-answer="bst|binary search tree|bsts" placeholder="subtype">
+            <input type="text" class="ds-blank" data-answer="avl tree|avl|avl trees" placeholder="impl">
+            <input type="text" class="ds-blank" data-answer="red-black tree|red black tree|redblack tree|rb tree|red-black trees" placeholder="impl"></div>
+        </div>
+        <div style="flex:1;min-width:230px;display:flex;flex-direction:column;gap:12px">
+          <div style="background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.5);border-radius:10px;padding:12px">
+            <div style="font-weight:700;color:#60a5fa;margin-bottom:8px;text-decoration:underline">Maps</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <input type="text" class="ds-blank" data-answer="map|maps" placeholder="ADT">
+              <input type="text" class="ds-blank" data-answer="hashmap|hashmaps|hash map" placeholder="impl"></div>
+          </div>
+          <div style="background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.5);border-radius:10px;padding:12px">
+            <div style="font-weight:700;color:#2dd4bf;margin-bottom:8px;text-decoration:underline">Graphs</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <input type="text" class="ds-blank" data-answer="graph|graphs" placeholder="ADT">
+              <input type="text" class="ds-blank" data-answer="adjacency matrix|adjacency matrices|adj matrix" placeholder="impl">
+              <input type="text" class="ds-blank" data-answer="adjacency list|adjacency lists|adj list" placeholder="impl"></div>
+          </div>
+        </div>
+      </div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="btn small" onclick="dsRecallCheck()">Check all</button>
+        <button class="btn ghost small" onclick="dsRecallReveal()">Reveal answers</button>
+        <button class="btn ghost small" onclick="dsRecallClear()">Clear</button>
+      </div>
+      <div class="fb" id="fb-dsrecall"></div>
+    </div>
   </section>
 
   <!-- ===================== BASICS ===================== -->
@@ -391,3 +443,41 @@ function mstRender(note){
   document.getElementById('mst-note').innerHTML=note||'';
 }
 mstSetMode('kruskal');
+
+/* ============================================================
+   DS taxonomy recall (fill-in-the-blank) helpers
+   ============================================================ */
+(function(){
+  const s=document.createElement('style');
+  s.textContent='#l21 .ds-blank{width:100px;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:#0b1119;color:var(--text);font-size:13px;font-weight:600}'
+    +'#l21 .ds-blank::placeholder{color:var(--muted);font-weight:400;font-style:italic}';
+  document.head.appendChild(s);
+})();
+function dsRecallCheck(){
+  let all=true, filled=0;
+  document.querySelectorAll('#l21 .ds-blank').forEach(inp=>{
+    const alts=inp.dataset.answer.toLowerCase().split('|').map(x=>x.trim());
+    const val=inp.value.trim().toLowerCase().replace(/\s+/g,' ');
+    if(val) filled++;
+    const ok=alts.indexOf(val)!==-1;
+    inp.style.borderColor=ok?'var(--green)':'var(--red)';
+    inp.style.background=ok?'rgba(21,153,87,.16)':'rgba(192,57,43,.12)';
+    if(!ok) all=false;
+  });
+  const fb=document.getElementById('fb-dsrecall');
+  fb.className='fb show '+(all?'ok':'no');
+  fb.innerHTML=all ? '✓ Perfect recall — you reproduced the entire taxonomy!'
+    : (filled===0 ? '✗ Try filling them in first, then check. Placeholders tell you ADT vs impl.'
+                  : '✗ Red boxes are off — glance back at the diagram above and retry. (Plurals and common abbreviations like BMT/RB are accepted.)');
+}
+function dsRecallReveal(){
+  document.querySelectorAll('#l21 .ds-blank').forEach(inp=>{
+    inp.value=inp.dataset.answer.split('|')[0];
+    inp.style.borderColor='var(--accent)'; inp.style.background='rgba(46,134,222,.14)';
+  });
+  const fb=document.getElementById('fb-dsrecall'); fb.className='fb show'; fb.innerHTML='Answers filled in. Clear and try again from memory!';
+}
+function dsRecallClear(){
+  document.querySelectorAll('#l21 .ds-blank').forEach(inp=>{ inp.value=''; inp.style.borderColor='var(--line)'; inp.style.background='#0b1119'; });
+  const fb=document.getElementById('fb-dsrecall'); fb.className='fb'; fb.innerHTML='';
+}

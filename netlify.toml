@@ -1,0 +1,4 @@
+# Static multi-course Study Hub — no build step.
+# Serve everything (index.html + courses/ + shared/) straight from the repo root.
+[build]
+  publish = "."

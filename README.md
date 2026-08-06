@@ -1,57 +1,50 @@
-# COMP210 Study Guide
+# University Study Hub
 
-Interactive study guide for COMP210 (Data Structures & Algorithms).
+A single, offline hub for all of Steven's courses — interactive study guides, lecture libraries, and past exams. Everything is static HTML/JS, so just open **`index.html`** in any web browser (no server or install needed).
 
-Open **COMP210_Study_Guide.html** in any web browser. All files must stay in the same folder.
+## How to use
 
-Covers:
-- ★ Quizzes + Practice Exams — all 4 in-class quizzes (real questions + correct answers) plus two original full-length practice finals matching their style and difficulty
-- ★ Final Prep — data-structures taxonomy (clickable overview of the L21 slide: ADT vs implementation), master complexity cheat-sheet, mixed cross-course rapid-fire, and an exam checklist
-- Lesson 1 — Intro: data structures & algorithms, time vs space complexity, primary/secondary storage, number systems (binary/hex/octal), bits/bytes & ASCII
-- Lesson 2 — Java: execution model (javac → JVM/JIT), primitives vs reference types, Strings & arrays, control flow
-- Lesson 3 — Java II: Scanner input, reading docs, methods & access modifiers, pair programming roles
-- Lesson 4 — Scope, Stack & Heap memory, Recursion, Debugger (+ interactive stack/heap diagramming)
-- Lesson 5 — OOP: classes, objects, instance vs class members, is-a, getters/setters
-- Lesson 6 — Interfaces, ADTs, encapsulation, unit testing (JUnit)
-- Lesson 7 — Big-O, binary search, bubble sort (interactive), quick sort, complexity of recursion
-- Lesson 8 — Recursion vs iteration, dynamic programming, generics (class/method/interface) + Fibonacci recursion-tree visualizer
-- Lesson 9 — Lists, ArrayList (amortized time), LinkedList (nodes) + interactive linked-list builder
-- Lesson 10 — Stacks (LIFO) & Queues (FIFO), ADTs vs implementations, LinkedList vs ArrayList complexity + interactive stack/queue visualizers
-- Lesson 11 — Binary Trees, tree traversals (pre/in/post/level), Binary Search Trees + interactive traversal visualizer
-- Lesson 12 — Heaps, Priority Queues, Binary Min Trees, Binary Heaps (array), buildHeap + interactive min-heap visualizer
-- Lesson 13 — AVL Trees: balance factor, the four rebalancing cases (LL/RR/LR/RL) & rotations + interactive rotation visualizer
-- Lesson 14 — Red-Black Trees: the five color invariants, insertion (recolor vs rotate), double-black deletion + interactive colored-tree case viewer, animated rotation & deletion walkthroughs
-- Lesson 15 — Red-Black Trees II: O(log n) complexity & real-world uses, comparing BST/AVL/RB, binary-tree taxonomy (full/complete/perfect/balanced), RB & AVL node fields
-- Lesson 16 — Hashing: hash tables/functions, load factor, chaining, linear & quadratic probing, primary/secondary clustering, double hashing + interactive hash-table probing visualizer
-- Lesson 17 — Hashing II: load factor, table resizing & thresholds (Tc=1.0 / Tp=0.75), worst-case vs amortized complexity, chaining vs probing, data-structure comparison + resize/rehash code
-- Lesson 18 — Graphs: heap/quick sort recap, graph basics (V/E/n/m), properties (edge/structural/density), adjacency matrix vs list, sparsity + interactive graph↔matrix↔list explorer
-- Lesson 19 — Graph Algorithms: topological sort (DAGs, in/out-degree, Kahn's algorithm), BFS shortest paths, O(V+E) complexity + interactive step-through BFS visualizer
-- Lesson 20 — Graph Algorithms II: edge relaxation, Dijkstra's (greedy, min-heap PQ, O((n+m)log n)), Bellman-Ford (negative weights & cycle detection, O(nm)), algorithm comparison, graph terminology + interactive step-through Dijkstra visualizer
-- Lesson 21 — Minimum Spanning Trees: spanning trees & MSTs, Kruskal's (union-find, sparse graphs), Prim's (tree growth, dense graphs), greedy strategy + interactive Kruskal's/Prim's MST builder
-- Practice — ramped time/space complexity problems + code-writing challenges
+- Open **`index.html`** → the homepage shows a card for every course.
+- Click a course → its page has tabs for **Overview**, **Study Guide**, **Lectures**, **Past Exams**, and **Notes & Resources**.
+- The **COMP 210** study guide is fully built (Lessons 1–21, Final Prep, and 4 real quizzes + 5 practice exams). The other courses start with an empty study guide you grow over the term.
 
-## Files
-- `COMP210_Study_Guide.html` — main page (shell + Lessons 4 & 5)
-- `COMP210_Study_Guide.js` — shared engine (navigation, grading, diagram renderers)
-- `COMP210_Study_Guide_Final.js` — ★ Final Prep (clickable DS taxonomy, complexity cheat-sheet, mixed practice)
-- `COMP210_Study_Guide_Quizzes.js` — ★ Quizzes 1–4 (real questions + answers) and two practice exams
-- `COMP210_Study_Guide_L1.js` — Lesson 1 module
-- `COMP210_Study_Guide_L2.js` — Lesson 2 module
-- `COMP210_Study_Guide_L3.js` — Lesson 3 module
-- `COMP210_Study_Guide_L6.js` — Lesson 6 module
-- `COMP210_Study_Guide_L7.js` — Lesson 7 module (with bubble-sort visualizer)
-- `COMP210_Study_Guide_L8.js` — Lesson 8 module (with Fibonacci recursion-tree visualizer)
-- `COMP210_Study_Guide_L9.js` — Lesson 9 module (with linked-list builder)
-- `COMP210_Study_Guide_L10.js` — Lesson 10 module (with stack/queue visualizers)
-- `COMP210_Study_Guide_L11.js` — Lesson 11 module (with tree-traversal visualizer)
-- `COMP210_Study_Guide_L12.js` — Lesson 12 module (with binary min-heap visualizer)
-- `COMP210_Study_Guide_L13.js` — Lesson 13 module (with AVL rotation visualizer)
-- `COMP210_Study_Guide_L14.js` — Lesson 14 module (with red-black colored-tree case viewer + animated rotation/deletion walkthroughs)
-- `COMP210_Study_Guide_L15.js` — Lesson 15 module (tree comparison & taxonomy)
-- `COMP210_Study_Guide_L16.js` — Lesson 16 module (with interactive hash-table probing visualizer)
-- `COMP210_Study_Guide_L17.js` — Lesson 17 module (load factor, resizing, complexity, comparisons)
-- `COMP210_Study_Guide_L18.js` — Lesson 18 module (with interactive graph↔matrix↔list explorer)
-- `COMP210_Study_Guide_L19.js` — Lesson 19 module (with interactive step-through BFS visualizer)
-- `COMP210_Study_Guide_L20.js` — Lesson 20 module (with interactive step-through Dijkstra visualizer)
-- `COMP210_Study_Guide_L21.js` — Lesson 21 module (with interactive Kruskal's/Prim's MST builder)
-- `COMP210_Study_Guide_Practice.js` — Practice module
+## Structure
+
+```
+index.html            ← hub homepage (course grid)
+hub_data.js           ← the course registry (edit to add/reorder courses)
+shared/
+  hub.css             ← shared dark-theme styling
+  course.js           ← renders each course page from its config
+courses/
+  COMP210/
+    course.html       ← the course page (loads config.js + shared/course.js)
+    config.js         ← course info + lists of lectures/exams/notes
+    guide/            ← the interactive study guide (index.html + modules)
+    materials/
+      lectures/       ← lecture slides/notes (PDFs, etc.)
+      exams/          ← past exams & quizzes (PDFs)
+  COMP211/  COMP301/  STOR155/   ← same layout; guides to be built
+  _TEMPLATE/          ← copy this to start a new course
+```
+
+## Add a new course
+
+1. Copy the **`courses/_TEMPLATE`** folder and rename it to your course slug (e.g. `courses/COMP311`).
+2. Edit that folder's **`config.js`** (code, title, description, color, requisites).
+3. Add an entry for it in **`hub_data.js`** so it shows on the homepage.
+
+## Add lectures or past exams to a course
+
+1. Drop the file into that course's **`materials/lectures/`** or **`materials/exams/`** folder.
+2. Add a line to the course's **`config.js`** under `lectures` or `exams`, e.g.
+   ```js
+   { title: "Midterm 1", file: "materials/exams/midterm1.pdf", solution: "materials/exams/midterm1_soln.pdf", date: "Oct 2026" }
+   ```
+
+## Build a study guide for a course
+
+Ask Claude: *"Add Lesson 1 for COMP 211"* and upload the lecture slides (and any quiz). Claude builds an interactive lesson module (active-recall questions, code exercises, diagrams) into that course's `guide/`, the same way COMP 210 was built.
+
+---
+*Courses set up: COMP 210 (Data Structures & Algorithms), COMP 211 (Systems Fundamentals), COMP 301 (Foundations of Programming), STOR 155 (Data Models & Inference).*

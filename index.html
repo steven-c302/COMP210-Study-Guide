@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Steven's University Study Hub</title>
+<link rel="stylesheet" href="shared/hub.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="hub-header">
+    <h1 id="hub-title">Study Hub</h1>
+    <p id="hub-sub"></p>
+  </div>
+  <div class="grid" id="course-grid"></div>
+  <div class="footer">
+    Add a course by copying the <code>courses/_TEMPLATE</code> folder, renaming it, and adding an entry to <code>hub_data.js</code>.
+    Drop lecture slides and past exams into each course's <code>materials/</code> folder and list them in its <code>config.js</code>.
+  </div>
+</div>
+<script src="hub_data.js"></script>
+<script>
+  document.getElementById('hub-title').textContent = (HUB.student ? HUB.student + "'s " : "") + "University Study Hub";
+  document.getElementById('hub-sub').textContent = HUB.subtitle || "";
+  const grid = document.getElementById('course-grid');
+  HUB.courses.forEach(c => {
+    const a = document.createElement('a');
+    a.className = 'course-card';
+    a.href = 'courses/' + c.slug + '/course.html';
+    a.style.borderLeftColor = c.color || 'var(--accent)';
+    a.innerHTML =
+      '<div class="code" style="color:' + (c.color||'var(--accent2)') + '">' + c.code + '</div>' +
+      '<div class="title">' + c.title + '</div>' +
+      '<div class="desc">' + (c.desc||'') + '</div>' +
+      '<div class="meta"><span class="pill">' + c.credits + ' credits</span>' +
+      '<span class="pill term">' + (c.term||'') + '</span>' +
+      (c.guide ? '<span class="pill" style="border-color:' + (c.color||'var(--accent)') + ';color:' + (c.color||'var(--accent2)') + '">study guide</span>' : '') +
+      '</div>';
+    grid.appendChild(a);
+  });
+  // "add a course" card
+  const add = document.createElement('a');
+  add.className = 'course-card add-card';
+  add.href = 'courses/_TEMPLATE/course.html';
+  add.innerHTML = '<div>+ Add a course<br><span style="font-size:12px">(copy the _TEMPLATE folder)</span></div>';
+  grid.appendChild(add);
+</script>
+</body>
+</html>

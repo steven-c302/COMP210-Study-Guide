@@ -36,11 +36,31 @@ courses/
 
 ## Add lectures or past exams to a course
 
+**Easiest — the ➕ Add buttons (in-hub).** On a course's **Lectures** or **Past Exams** tab, click **➕ Add**, pick your PDF/PPTX, and give it a title. The hub copies the file into the right folder and records it automatically.
+*Requires Chrome or Edge with the hub served over http(s) or localhost* (browsers block file-writing when a page is opened directly from disk with `file://`). Run a quick local server from this folder with either:
+```
+python -m http.server 8000       # then open http://localhost:8000
+# or
+npx serve
+```
+
+**Manual (works anywhere).**
 1. Drop the file into that course's **`materials/lectures/`** or **`materials/exams/`** folder.
 2. Add a line to the course's **`config.js`** under `lectures` or `exams`, e.g.
    ```js
    { title: "Midterm 1", file: "materials/exams/midterm1.pdf", solution: "materials/exams/midterm1_soln.pdf", date: "Oct 2026" }
    ```
+
+## Hosting (access it from anywhere)
+
+This is a static site, so **GitHub Pages** is the simplest free host and it's already tied to your repo:
+
+1. Push this repo to GitHub.
+2. On GitHub: **Settings → Pages → Build and deployment → Source: Deploy from a branch → `main` / root**, then Save.
+3. After ~1 minute your hub is live at `https://<your-username>.github.io/<repo-name>/`.
+4. It auto-redeploys every time you `git push`.
+
+To add materials to the **hosted** copy, upload the file to the repo on github.com (open the course's `materials/` folder → **Add file → Upload files** → drag it in → commit) and add one line to that course's `config.js` (edit it right in GitHub). Pages redeploys automatically. (Alternatives to GitHub Pages: Netlify, Vercel, and Cloudflare Pages — all free for static sites.)
 
 ## Build a study guide for a course
 

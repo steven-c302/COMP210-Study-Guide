@@ -4,8 +4,14 @@
    ============================================================ */
 (function(){
   const C = window.COURSE || {};
+  // Merge any materials added via the in-hub Materials Manager (materials.js)
+  const MM = window.MATERIALS || {};
+  C.lectures = (C.lectures || []).concat(MM.lectures || []);
+  C.exams = (C.exams || []).concat(MM.exams || []);
   const app = document.getElementById('app');
   const accent = C.color || 'var(--accent)';
+  const addBtn = (kind) => '<button class="ghost-link" style="margin-bottom:12px;cursor:pointer;font-family:inherit" ' +
+    'onclick="MaterialsManager.add(\'' + kind + '\')">➕ Add ' + (kind==='exams'?'exam':'lecture') + '</button>';
 
   const matItem = (m, kind) => {
     const icon = kind === 'exam' ? '📝' : kind === 'lecture' ? '📄' : '🔗';
@@ -73,12 +79,14 @@
 
   // ---- lectures ----
   html += '<div class="tab-panel" id="p-lectures"><div class="card"><h2>Lecture Library</h2>' +
-    '<p class="muted" style="font-size:13px">Slides, notes, and recordings. Add files to <code>materials/lectures/</code> and list them in <code>config.js</code>.</p>' +
+    '<p class="muted" style="font-size:13px">Slides, notes, and recordings.</p>' +
+    addBtn('lectures') +
     list(C.lectures, 'lecture', 'No lectures added yet.') + '</div></div>';
 
   // ---- exams ----
   html += '<div class="tab-panel" id="p-exams"><div class="card"><h2>Past Exams &amp; Quizzes</h2>' +
-    '<p class="muted" style="font-size:13px">Store exams (and solutions) in <code>materials/exams/</code> and list them in <code>config.js</code>.</p>' +
+    '<p class="muted" style="font-size:13px">Exams, quizzes, and their solutions.</p>' +
+    addBtn('exams') +
     list(C.exams, 'exam', 'No past exams added yet.') + '</div></div>';
 
   // ---- notes ----
